@@ -48,10 +48,8 @@ class WFFRequest {
 
         this.instance.interceptors.response.use(
             (res) => {
-                setTimeout(() => {
-                    // 将loading移除
-                    this.loading?.close()
-                }, 3000)
+                // 将loading移除
+                this.loading?.close()
 
                 const data = res.data
                 if (data.returnCode === '-1001') {
@@ -74,35 +72,55 @@ class WFFRequest {
         )
     }
 
-    request(config: WFFRequestConfig) {
-        // 如果请求拦截器存在，则把config加工后的返回
-        if (config.interceptors?.requestInterceptor) {
-            // 在拦截器里面加工后的config返回
-            config = config.interceptors.requestInterceptor(config)
-        }
-        console.log(config.showLoading)
-        // 2.判断是否需要显示loading
-        if (config.showLoading === false) {
-            this.showLoading = config.showLoading
-        }
-
-        this.instance.request(config).then(
-            (res) => {
-                // 每次请求完了都把他设为true，不然会影响下一次请求
-                this.showLoading = DEFAULT_LOADING
-
-                // 如果响应拦截器存在，就把res加工后返回
-                if (config.interceptors?.responseInterceptor) {
-                    res = config.interceptors.responseInterceptor(res)
-                }
-                console.log(res)
-            },
-            (err) => {
-                // 每次请求完了都把他设为true，不然会影响下一次请求
-                this.showLoading = DEFAULT_LOADING
-                return err
+    request<T>(config: WFFRequestConfig<T>): Promise<T> {
+        return new Promise((resolve, reject) => {
+            // 如果请求拦截器存在，则把config加工后的返回
+            if (config.interceptors?.requestInterceptor) {
+                // 在拦截器里面加工后的config返回
+                config = config.interceptors.requestInterceptor(config)
             }
-        )
+            console.log(config.showLoading)
+            // 2.判断是否需要显示loading
+            if (config.showLoading === false) {
+                this.showLoading = config.showLoading
+            }
+
+            this.instance.request<any, T>(config).then(
+                (res) => {
+                    // 每次请求完了都把他设为true，不然会影响下一次请求
+                    this.showLoading = DEFAULT_LOADING
+
+                    // 如果响应拦截器存在，就把res加工后返回
+                    if (config.interceptors?.responseInterceptor) {
+                        res = config.interceptors.responseInterceptor(res)
+                    }
+                    console.log(res)
+                    resolve(res)
+                },
+                (err) => {
+                    // 每次请求完了都把他设为true，不然会影响下一次请求
+                    this.showLoading = DEFAULT_LOADING
+                    reject(err)
+                    return err
+                }
+            )
+        })
+    }
+
+    get<T>(config: WFFRequestConfig<T>): Promise<T> {
+        return this.request<T>({ ...config, method: 'GET' })
+    }
+
+    post<T>(config: WFFRequestConfig<T>): Promise<T> {
+        return this.request<T>({ ...config, method: 'POST' })
+    }
+
+    delete<T>(config: WFFRequestConfig<T>): Promise<T> {
+        return this.request<T>({ ...config, method: 'DELETE' })
+    }
+
+    patch<T>(config: WFFRequestConfig<T>): Promise<T> {
+        return this.request<T>({ ...config, method: 'PATCH' })
     }
 }
 

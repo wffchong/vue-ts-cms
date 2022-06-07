@@ -8,8 +8,8 @@ const wffRequest = new WFFRequest({
         requestInterceptor: (config) => {
             // 携带token的拦截
             const token = ''
-            if (token) {
-                config.headers!.Authorization = `Bearer ${token}`
+            if (token && config.headers) {
+                config.headers.Authorization = `Bearer ${token}`
             }
             console.log('请求成功拦截器')
             return config
