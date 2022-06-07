@@ -9,5 +9,5 @@ export interface WFFRequestInterceptors {
 
 export interface WFFRequestConfig extends AxiosRequestConfig {
     interceptors?: WFFRequestInterceptors
-    // showLoading?: boolean
+    showLoading?: boolean
 }

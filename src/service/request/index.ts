@@ -1,14 +1,21 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig } from 'axios'
+import type { AxiosInstance } from 'axios'
 import type { WFFRequestConfig, WFFRequestInterceptors } from './type'
+import { ElLoading } from 'element-plus'
+import { LoadingInstance } from 'element-plus/es/components/loading/src/loading'
+import 'element-plus/theme-chalk/el-loading.css'
 
+const DEFAULT_LOADING = true
 class WFFRequest {
     instance: AxiosInstance
     interceptors?: WFFRequestInterceptors
+    showLoading: boolean
+    loading?: LoadingInstance
 
     constructor(config: WFFRequestConfig) {
         this.instance = axios.create(config)
         this.interceptors = config.interceptors
+        this.showLoading = config.showLoading ?? DEFAULT_LOADING
 
         this.instance.interceptors.request.use(
             this.interceptors?.requestInterceptor,
@@ -23,6 +30,13 @@ class WFFRequest {
         // 添加所有实例都有的拦截器
         this.instance.interceptors.request.use(
             (config) => {
+                if (this.showLoading) {
+                    this.loading = ElLoading.service({
+                        lock: true,
+                        text: '正在请求数据....',
+                        background: 'rgba(0, 0, 0, 0.5)'
+                    })
+                }
                 console.log('所有实例都有的请求成功拦截器')
                 return config
             },
@@ -33,12 +47,28 @@ class WFFRequest {
         )
 
         this.instance.interceptors.response.use(
-            (config) => {
-                console.log('所有实例都有的响应成功拦截器')
-                return config
+            (res) => {
+                setTimeout(() => {
+                    // 将loading移除
+                    this.loading?.close()
+                }, 3000)
+
+                const data = res.data
+                if (data.returnCode === '-1001') {
+                    console.log('请求失败~, 错误信息')
+                } else {
+                    return data
+                }
+                return res.data
             },
             (err) => {
-                console.log('所有实例都有的响应失败拦截器')
+                // 将loading移除
+                this.loading?.close()
+
+                // 例子: 判断不同的HttpErrorCode显示不同的错误信息
+                if (err.response.status === '404') {
+                    console.log('404的错误')
+                }
                 return err
             }
         )
@@ -50,14 +80,29 @@ class WFFRequest {
             // 在拦截器里面加工后的config返回
             config = config.interceptors.requestInterceptor(config)
         }
+        console.log(config.showLoading)
+        // 2.判断是否需要显示loading
+        if (config.showLoading === false) {
+            this.showLoading = config.showLoading
+        }
 
-        this.instance.request(config).then((res) => {
-            // 如果响应拦截器存在，就把res加工后返回
-            if (config.interceptors?.responseInterceptor) {
-                res = config.interceptors.responseInterceptor(res)
+        this.instance.request(config).then(
+            (res) => {
+                // 每次请求完了都把他设为true，不然会影响下一次请求
+                this.showLoading = DEFAULT_LOADING
+
+                // 如果响应拦截器存在，就把res加工后返回
+                if (config.interceptors?.responseInterceptor) {
+                    res = config.interceptors.responseInterceptor(res)
+                }
+                console.log(res)
+            },
+            (err) => {
+                // 每次请求完了都把他设为true，不然会影响下一次请求
+                this.showLoading = DEFAULT_LOADING
+                return err
             }
-            console.log(res)
-        })
+        )
     }
 }
 
