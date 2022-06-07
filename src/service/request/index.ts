@@ -44,8 +44,18 @@ class WFFRequest {
         )
     }
 
-    request(config: AxiosRequestConfig) {
+    request(config: WFFRequestConfig) {
+        // 如果请求拦截器存在，则把config加工后的返回
+        if (config.interceptors?.requestInterceptor) {
+            // 在拦截器里面加工后的config返回
+            config = config.interceptors.requestInterceptor(config)
+        }
+
         this.instance.request(config).then((res) => {
+            // 如果响应拦截器存在，就把res加工后返回
+            if (config.interceptors?.responseInterceptor) {
+                res = config.interceptors.responseInterceptor(res)
+            }
             console.log(res)
         })
     }
