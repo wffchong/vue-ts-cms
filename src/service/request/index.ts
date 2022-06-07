@@ -19,6 +19,29 @@ class WFFRequest {
             this.interceptors?.responseInterceptor,
             this.interceptors?.responseInterceptorCatch
         )
+
+        // 添加所有实例都有的拦截器
+        this.instance.interceptors.request.use(
+            (config) => {
+                console.log('所有实例都有的请求成功拦截器')
+                return config
+            },
+            (err) => {
+                console.log('所有实例都有的请求失败拦截器')
+                return err
+            }
+        )
+
+        this.instance.interceptors.response.use(
+            (config) => {
+                console.log('所有实例都有的响应成功拦截器')
+                return config
+            },
+            (err) => {
+                console.log('所有实例都有的响应失败拦截器')
+                return err
+            }
+        )
     }
 
     request(config: AxiosRequestConfig) {
