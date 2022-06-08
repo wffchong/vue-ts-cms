@@ -37,11 +37,9 @@ class WFFRequest {
                         background: 'rgba(0, 0, 0, 0.5)'
                     })
                 }
-                console.log('所有实例都有的请求成功拦截器')
                 return config
             },
             (err) => {
-                console.log('所有实例都有的请求失败拦截器')
                 return err
             }
         )
@@ -50,7 +48,6 @@ class WFFRequest {
             (res) => {
                 // 将loading移除
                 this.loading?.close()
-
                 const data = res.data
                 if (data.returnCode === '-1001') {
                     console.log('请求失败~, 错误信息')
@@ -62,7 +59,7 @@ class WFFRequest {
             (err) => {
                 // 将loading移除
                 this.loading?.close()
-
+                console.log(123)
                 // 例子: 判断不同的HttpErrorCode显示不同的错误信息
                 if (err.response.status === '404') {
                     console.log('404的错误')
@@ -79,7 +76,6 @@ class WFFRequest {
                 // 在拦截器里面加工后的config返回
                 config = config.interceptors.requestInterceptor(config)
             }
-            console.log(config.showLoading)
             // 2.判断是否需要显示loading
             if (config.showLoading === false) {
                 this.showLoading = config.showLoading
@@ -94,7 +90,6 @@ class WFFRequest {
                     if (config.interceptors?.responseInterceptor) {
                         res = config.interceptors.responseInterceptor(res)
                     }
-                    console.log(res)
                     resolve(res)
                 },
                 (err) => {

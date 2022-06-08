@@ -1,25 +1,27 @@
 <template>
     <el-form :model="account" :rules="rules" ref="formRef">
-        <el-form-item label="账号" prop="username">
-            <el-input v-model="account.username"></el-input>
+        <el-form-item label="账号" prop="name">
+            <el-input v-model="account.name"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-            <el-input v-model="account.password"></el-input>
+            <el-input v-model="account.password" type="password" show-password></el-input>
         </el-form-item>
     </el-form>
 </template>
 
 <script lang="ts">
 import { ElForm } from 'element-plus'
-import { defineComponent, ref } from 'vue'
-import { reactive } from 'vue'
+import { defineComponent, ref, reactive } from 'vue'
 import { rules } from '../config/account-config'
+import { useStore } from 'vuex'
 
 export default defineComponent({
     setup() {
+        const store = useStore()
+
         const account = reactive({
-            username: '',
-            password: ''
+            name: 'coderwhy',
+            password: '123456'
         })
 
         const formRef = ref<InstanceType<typeof ElForm>>()
@@ -27,7 +29,7 @@ export default defineComponent({
         const loginAction = () => {
             formRef.value?.validate((valid) => {
                 if (valid) {
-                    console.log('调用登录方法')
+                    store.dispatch('login/accountLoginAction', { ...account })
                 }
             })
         }

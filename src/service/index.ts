@@ -1,3 +1,4 @@
+import localCache from '@/utils/localCache'
 import WFFRequest from './request'
 import { BASE_URL, TIME_OUT } from './request/config'
 
@@ -7,23 +8,19 @@ const wffRequest = new WFFRequest({
     interceptors: {
         requestInterceptor: (config) => {
             // 携带token的拦截
-            const token = ''
+            const token = localCache.getCache('token')
             if (token && config.headers) {
                 config.headers.Authorization = `Bearer ${token}`
             }
-            console.log('请求成功拦截器')
             return config
         },
         requestInterceptorCatch: (err) => {
-            console.log('请求失败拦截器')
             return err
         },
         responseInterceptor: (config) => {
-            console.log('响应请求成功拦截器')
             return config
         },
         responseInterceptorCatch: (err) => {
-            console.log('响应请求失败拦截器')
             return err
         }
     }
