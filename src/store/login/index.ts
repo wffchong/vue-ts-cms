@@ -1,6 +1,7 @@
 import type { Module } from 'vuex'
 import { ILoginState } from './type'
 import { IRootState } from '../type'
+import { IUserInfo, IUserMenus } from '@/service/login/type'
 import { accountLoginRequest, requestUserInfoById, requestUserMenusByRoleId } from '@/service/login/index'
 import localCache from '@/utils/localCache'
 import router from '@/router'
@@ -11,8 +12,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     namespaced: true,
     state: {
         token: '',
-        userInfo: {},
-        userMenus: []
+        userInfo: {} as IUserInfo,
+        userMenus: {} as IUserMenus
     },
     actions: {
         async accountLoginAction({ commit }, payload) {
@@ -36,10 +37,33 @@ const loginModule: Module<ILoginState, IRootState> = {
                 const userMenus = userMenusResult.data
                 commit('changeUserMenus', userMenus)
                 localCache.setCache('userMenus', userMenus)
-                ElMessage.success('登录成功')
+                ElMessage({
+                    type: 'success',
+                    message: '登录成功',
+                    center: true
+                })
                 router.push('/main')
             } catch (error) {
-                ElMessage.error('登录失败')
+                ElMessage({
+                    type: 'error',
+                    message: '登录失败',
+                    center: true
+                })
+            }
+        },
+        // 登录持久化
+        loadLocalLogin({ commit }) {
+            const token = localCache.getCache('token')
+            if (token) {
+                commit('changeToken', token)
+            }
+            const userInfo = localCache.getCache('userInfo')
+            if (userInfo) {
+                commit('changeUserInfo', userInfo)
+            }
+            const userMenus = localCache.getCache('userMenus')
+            if (userMenus) {
+                commit('changeUserMenus', userMenus)
             }
         }
     },
