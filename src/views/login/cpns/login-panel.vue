@@ -41,7 +41,7 @@ export default defineComponent({
 
         const handleLoginClick = () => {
             if (currentTab.value === 'account') {
-                accountRef.value?.loginAction()
+                accountRef.value?.loginAction(isKeepPassword.value)
             } else {
                 console.log('调用短信登录的action')
             }
