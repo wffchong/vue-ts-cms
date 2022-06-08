@@ -23,7 +23,7 @@ export const requestUserInfoById = (id: number) => {
 
 // 获取用户菜单
 export const requestUserMenusByRoleId = (id: number) => {
-    return wffRequest.get<ApiResponse<IUserMenus>>({
-        url: LoginAPI.RequestUserMenu + id
+    return wffRequest.get<ApiResponse<IUserMenus[]>>({
+        url: LoginAPI.RequestUserMenu + id + '/menu'
     })
 }

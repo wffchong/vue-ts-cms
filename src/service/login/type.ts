@@ -46,10 +46,34 @@ export interface IRole {
 // 用户菜单
 export interface IUserMenus {
     id: number
-    createAt: string
-    intro: string
+    icon: string
     name: string
-    updateAt: string
+    sort: number
+    type: number
+    url: string
+    children: IMenuChildren
+}
+
+// 子菜单
+export interface IMenuChildren {
+    id: number
+    name: string
+    parentId: number
+    sort: number
+    type: number
+    url: string
+    children: IMenuGrandChildren
+}
+
+// 孙菜单
+export interface IMenuGrandChildren {
+    id: number
+    name: string
+    parentId: number
+    sort: number
+    type: number
+    url: string
+    permission: string
 }
 
 // 统一的返回类型

@@ -37,6 +37,7 @@ const loginModule: Module<ILoginState, IRootState> = {
                 const userMenus = userMenusResult.data
                 commit('changeUserMenus', userMenus)
                 localCache.setCache('userMenus', userMenus)
+
                 ElMessage({
                     type: 'success',
                     message: '登录成功',
