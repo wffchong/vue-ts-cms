@@ -6,7 +6,15 @@ import './assets/css/index.less'
 import router from './router'
 import store from './store'
 
+import * as ElIcons from '@element-plus/icons-vue'
+
+const app = createApp(App)
+
+Object.keys(ElIcons).forEach((key) => {
+    app.component(key, ElIcons[key as keyof typeof ElIcons])
+})
+
 // 登录持久化
 store.dispatch('login/loadLocalLogin')
 
-createApp(App).use(store).use(router).mount('#app')
+app.use(store).use(router).mount('#app')

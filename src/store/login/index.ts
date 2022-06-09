@@ -13,7 +13,7 @@ const loginModule: Module<ILoginState, IRootState> = {
     state: {
         token: '',
         userInfo: {} as IUserInfo,
-        userMenus: {} as IUserMenus
+        userMenus: [] as IUserMenus[]
     },
     actions: {
         async accountLoginAction({ commit }, payload) {

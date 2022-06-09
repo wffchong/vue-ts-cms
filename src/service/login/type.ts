@@ -51,7 +51,7 @@ export interface IUserMenus {
     sort: number
     type: number
     url: string
-    children: IMenuChildren
+    children: IMenuChildren[]
 }
 
 // 子菜单
@@ -62,7 +62,7 @@ export interface IMenuChildren {
     sort: number
     type: number
     url: string
-    children: IMenuGrandChildren
+    children: IMenuGrandChildren[]
 }
 
 // 孙菜单
