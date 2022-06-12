@@ -4,7 +4,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        redirect: '/login'
+        redirect: '/main'
     },
     {
         path: '/login',
@@ -15,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/main',
         name: 'main',
         component: () => import(/* webpackChunkName: "main" */ '../views/main/main.vue')
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'notFound',
+        component: () => import('@/views/not-found/not-found.vue')
     }
 ]
 

@@ -23,7 +23,12 @@
 
                 <!-- 子菜单 -->
                 <template v-if="item.children">
-                    <el-menu-item v-for="subItem in item.children" :key="subItem.id" :index="subItem.id + ''">
+                    <el-menu-item
+                        @click="handleSubItemClick(subItem)"
+                        v-for="subItem in item.children"
+                        :key="subItem.id"
+                        :index="subItem.id + ''"
+                    >
                         {{ subItem.name }}
                     </el-menu-item>
                 </template>
@@ -35,6 +40,7 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from '@/store'
+import router from '@/router'
 export default {
     props: {
         isShowSideMenu: Boolean
@@ -49,8 +55,14 @@ export default {
             })
         )
 
+        // 路由跳转
+        const handleSubItemClick = (subItem) => {
+            router.push(subItem.url)
+        }
+
         return {
-            userMenus
+            userMenus,
+            handleSubItemClick
         }
     }
 }

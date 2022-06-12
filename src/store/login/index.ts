@@ -7,6 +7,7 @@ import localCache from '@/utils/localCache'
 import router from '@/router'
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 
 const loginModule: Module<ILoginState, IRootState> = {
     namespaced: true,
@@ -77,6 +78,11 @@ const loginModule: Module<ILoginState, IRootState> = {
         },
         changeUserMenus(state, userMenus) {
             state.userMenus = userMenus
+
+            // 注册动态路由
+
+            const routes = mapMenusToRoutes(state.userMenus)
+            routes.forEach((route) => router.addRoute('main', route))
         }
     },
     getters: {}
