@@ -5,48 +5,63 @@
             <span class="title" v-if="!isShowSideMenu">Vue3+Ts</span>
         </div>
         <el-menu
-            default-active="2"
+            :default-active="defaultActive"
             :collapse="isShowSideMenu"
             class="el-menu-vertical"
             background-color="#0c2135"
             text-color="#b7bdc3"
             active-text-color="#0a60bd"
         >
-            <el-sub-menu v-for="item in userMenus" :key="item.id" :index="item.id + ''">
-                <!-- 标题 -->
-                <template #title>
-                    <el-icon>
-                        <component :is="item.icon"></component>
-                    </el-icon>
-                    <span>{{ item.name }}</span>
-                </template>
+            <template v-for="item in userMenus" :key="item.id">
+                <!-- 二级菜单 -->
+                <template v-if="item.type === 1">
+                    <el-sub-menu :index="item.id + ''">
+                        <!-- 标题 -->
+                        <template #title>
+                            <el-icon>
+                                <component :is="item.icon"></component>
+                            </el-icon>
+                            <span>{{ item.name }}</span>
+                        </template>
 
-                <!-- 子菜单 -->
-                <template v-if="item.children">
-                    <el-menu-item
-                        @click="handleSubItemClick(subItem)"
-                        v-for="subItem in item.children"
-                        :key="subItem.id"
-                        :index="subItem.id + ''"
-                    >
-                        {{ subItem.name }}
+                        <!-- 子菜单 -->
+                        <template v-if="item.children">
+                            <el-menu-item
+                                @click="handleSubItemClick(subItem)"
+                                v-for="subItem in item.children"
+                                :key="subItem.id"
+                                :index="subItem.id + ''"
+                            >
+                                {{ subItem.name }}
+                            </el-menu-item>
+                        </template>
+                    </el-sub-menu>
+                </template>
+                <!-- 一级菜单 -->
+                <template v-else-if="item.type === 2">
+                    <el-menu-item :index="item.id + ''">
+                        <i v-if="item.icon" :class="item.icon"></i>
+                        <span>{{ item.name }}</span>
                     </el-menu-item>
                 </template>
-            </el-sub-menu>
+            </template>
         </el-menu>
     </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store'
-import router from '@/router'
-export default {
+import { useRoute, useRouter } from 'vue-router'
+import { pathMapToMenu } from '@/utils/map-menus'
+export default defineComponent({
     props: {
         isShowSideMenu: Boolean
     },
     setup() {
         const store = useStore()
+        const router = useRouter()
+        const route = useRoute()
 
         // 处理字体图标，element-plus更新了需要处理下
         const userMenus = computed(() =>
@@ -55,6 +70,9 @@ export default {
             })
         )
 
+        const menu = pathMapToMenu(userMenus.value, route.path)
+        const defaultActive = ref(menu.id + '')
+
         // 路由跳转
         const handleSubItemClick = (subItem) => {
             router.push(subItem.url)
@@ -62,10 +80,11 @@ export default {
 
         return {
             userMenus,
-            handleSubItemClick
+            handleSubItemClick,
+            defaultActive
         }
     }
-}
+})
 </script>
 
 <style lang="less" scoped>

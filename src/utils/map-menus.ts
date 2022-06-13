@@ -1,6 +1,8 @@
 import { RouteRecordRaw } from 'vue-router'
 import { IUserMenus } from '@/service/login/type'
 
+let firstMenu: IUserMenus | null = null
+
 export function mapMenusToRoutes(userMenus: IUserMenus[]): RouteRecordRaw[] {
     const routes: RouteRecordRaw[] = []
 
@@ -22,6 +24,8 @@ export function mapMenusToRoutes(userMenus: IUserMenus[]): RouteRecordRaw[] {
             if (menu.type === 2) {
                 const route = allRoutes.find((route) => route.path === menu.url)
                 if (route) routes.push(route)
+                // 把第一个子菜单设置上去
+                if (!firstMenu) firstMenu = menu
             } else if (menu.type === 1 && menu.children) {
                 _recurseGetRoute(menu.children)
             }
@@ -32,3 +36,24 @@ export function mapMenusToRoutes(userMenus: IUserMenus[]): RouteRecordRaw[] {
 
     return routes
 }
+
+export function pathMapToMenu(userMenus: IUserMenus[], currentPath: string): IUserMenus {
+    // 传入所有的菜单和当前路由信息，根据当前路由信息匹配菜单，拿到对应的id
+
+    let res: IUserMenus | undefined = undefined
+
+    for (const userMenu of userMenus) {
+        if (userMenu.type === 1) {
+            // 递归
+            const findMenu = pathMapToMenu(userMenu.children ?? [], currentPath)
+            if (findMenu) {
+                return findMenu
+            }
+        } else if (userMenu.type === 2 && userMenu.url === currentPath) {
+            res = userMenu
+        }
+    }
+    return res as IUserMenus
+}
+
+export { firstMenu }
