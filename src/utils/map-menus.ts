@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from 'vue-router'
 import { IUserMenus } from '@/service/login/type'
+import { IBreadcrumb } from '@/baseUi/breadcrumb/type'
 
 let firstMenu: IUserMenus | null = null
 
@@ -37,23 +38,68 @@ export function mapMenusToRoutes(userMenus: IUserMenus[]): RouteRecordRaw[] {
     return routes
 }
 
-export function pathMapToMenu(userMenus: IUserMenus[], currentPath: string): IUserMenus {
-    // 传入所有的菜单和当前路由信息，根据当前路由信息匹配菜单，拿到对应的id
+// export function pathMapToMenu(userMenus: IUserMenus[], currentPath: string): IUserMenus {
+//     // 传入所有的菜单和当前路由信息，根据当前路由信息匹配菜单，拿到对应的id
 
-    let res: IUserMenus | undefined = undefined
+//     let res: IUserMenus | undefined = undefined
 
-    for (const userMenu of userMenus) {
-        if (userMenu.type === 1) {
-            // 递归
-            const findMenu = pathMapToMenu(userMenu.children ?? [], currentPath)
+//     for (const userMenu of userMenus) {
+//         if (userMenu.type === 1) {
+//             // 递归
+//             const findMenu = pathMapToMenu(userMenu.children ?? [], currentPath)
+//             if (findMenu) {
+//                 return findMenu
+//             }
+//         } else if (userMenu.type === 2 && userMenu.url === currentPath) {
+//             res = userMenu
+//         }
+//     }
+//     return res as IUserMenus
+// }
+
+// export function pathMapToBreadcrumbs(userMenus: IUserMenus[], currentPath: string): IBreadcrumb[] {
+//     // 传入所有的菜单和当前路由信息，根据当前路由信息匹配菜单，拿到对应的id
+
+//     const breadcrumbs: IBreadcrumb[] = []
+
+//     for (const userMenu of userMenus) {
+//         if (userMenu.type === 1) {
+//             // 递归
+//             const findMenu = pathMapToMenu(userMenu.children ?? [], currentPath)
+//             console.log(findMenu)
+//             if (findMenu) {
+//                 breadcrumbs.push({ name: userMenu.name, path: userMenu.url })
+//                 breadcrumbs.push({ name: findMenu.name, path: findMenu.url })
+//                 console.log('1', breadcrumbs)
+//                 return breadcrumbs
+//             }
+//         } else if (userMenu.type === 2 && userMenu.url === currentPath) {
+//             return breadcrumbs
+//         }
+//     }
+//     return breadcrumbs
+// }
+
+export function pathMapBreadcrumbs(userMenus: IUserMenus[], currentPath: string) {
+    const breadcrumbs: IBreadcrumb[] = []
+    pathMapToMenu(userMenus, currentPath, breadcrumbs)
+    return breadcrumbs
+}
+
+// /main/system/role  -> type === 2 对应menu
+export function pathMapToMenu(userMenus: IUserMenus[], currentPath: string, breadcrumbs?: IBreadcrumb[]): any {
+    for (const menu of userMenus) {
+        if (menu.type === 1) {
+            const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
             if (findMenu) {
+                breadcrumbs?.push({ name: menu.name })
+                breadcrumbs?.push({ name: findMenu.name })
                 return findMenu
             }
-        } else if (userMenu.type === 2 && userMenu.url === currentPath) {
-            res = userMenu
+        } else if (menu.type === 2 && menu.url === currentPath) {
+            return menu
         }
     }
-    return res as IUserMenus
 }
 
 export { firstMenu }

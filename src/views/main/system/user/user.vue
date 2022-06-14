@@ -1,16 +1,23 @@
 <template>
     <div class="user">
-        <h2>user</h2>
+        <WFFForm v-bind="searchFormConfig" />
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import WFFForm from '@/baseUi/form/form.vue'
+import { searchFormConfig } from './config/search-config'
 
 export default defineComponent({
     name: 'user',
+    components: {
+        WFFForm
+    },
     setup() {
-        return {}
+        return {
+            searchFormConfig
+        }
     }
 })
 </script>
