@@ -65,8 +65,19 @@ export default defineComponent({
         const handleSelectionChange = (tableList: IUserList[]) => {
             console.log(tableList)
         }
+
+        const handleSizeChange = (val: number) => {
+            console.log(`${val} items per page`)
+        }
+
+        const handleCurrentChange = (val: number) => {
+            console.log(`current page: ${val}`)
+        }
+
         return {
-            handleSelectionChange
+            handleSelectionChange,
+            handleSizeChange,
+            handleCurrentChange
         }
     }
 })

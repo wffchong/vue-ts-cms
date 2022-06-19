@@ -6,8 +6,8 @@
             </template>
             <template #footer>
                 <div class="handle-btns">
-                    <el-button icon="refresh">重置</el-button>
-                    <el-button type="primary" icon="search">搜索</el-button>
+                    <el-button icon="refresh" @click="handleReset">重置</el-button>
+                    <el-button type="primary" icon="search" @click="handleQuery">搜索</el-button>
                 </div>
             </template>
         </wff-form>
@@ -28,17 +28,32 @@ export default defineComponent({
             required: true
         }
     },
-    setup() {
-        const formData = ref({
-            id: '',
-            name: '',
-            password: '',
-            sport: '',
-            createTime: ''
-        })
+    setup(props) {
+        // 拿到配置中的formItems
+        const formItems = props.searchFormConfig.formItems ?? []
+
+        // 定义一个初始的
+        const formOriginData: any = {}
+
+        // formOriginData遍历添加属性
+        for (const item of formItems) {
+            formOriginData[item.field] = ''
+        }
+
+        const formData = ref(formOriginData)
+
+        const handleReset = () => {
+            formData.value = formOriginData
+        }
+
+        const handleQuery = () => {
+            console.log('搜索')
+        }
 
         return {
-            formData
+            formData,
+            handleReset,
+            handleQuery
         }
     }
 })
