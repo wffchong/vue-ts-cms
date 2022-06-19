@@ -1,6 +1,8 @@
 import { IUserList } from '@/service/main/system/type'
 
 export interface ISystemState {
-    userList: IUserList[]
-    userCount: number
+    usersList: IUserList[]
+    usersCount: number
+    roleList: any[]
+    roleCount: number
 }

@@ -40,21 +40,28 @@ export default defineComponent({
         contentConfig: {
             type: Object,
             required: true
+        },
+        pageName: {
+            type: String,
+            required: true
         }
     },
-    setup() {
+    setup(props) {
         const store = useStore()
+        console.log(props.pageName)
 
         store.dispatch('system/getPageListAction', {
-            pageUrl: '/users/list',
+            pageName: props.pageName,
             queryInfo: {
                 offset: 0,
                 size: 10
             }
         })
 
-        const dataList = computed(() => store.state.system.userList)
+        // const dataList = computed(() => store.state.system.usersList)
+        const dataList = computed(() => store.getters[`system/pageListData`](props.pageName))
 
+        console.log(dataList)
         return { dataList }
     }
 })

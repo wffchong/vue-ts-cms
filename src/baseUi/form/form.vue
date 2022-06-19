@@ -21,6 +21,7 @@
                                 <el-select
                                     style="width: 100%"
                                     v-bind="formItem.otherOptions"
+                                    :model-value="modelValue[`${formItem.field}`]"
                                     @update:modelValue="handleValueChange($event, formItem.field)"
                                 >
                                     <el-option v-for="opt in formItem.options" :key="opt.value" :value="opt.value">
@@ -31,6 +32,7 @@
                             <template v-if="formItem.type === 'datepicker'">
                                 <el-date-picker
                                     v-bind="formItem.otherOptions"
+                                    :model-value="modelValue[`${formItem.field}`]"
                                     @update:modelValue="handleValueChange($event, formItem.field)"
                                 />
                             </template>
