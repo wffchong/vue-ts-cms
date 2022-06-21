@@ -1,6 +1,5 @@
 <template>
     <div class="goods">
-        <!-- <page-search :searchFormConfig="searchFormConfig" /> -->
         <page-content :contentConfig="contentConfig" pageName="goods">
             <template #image="scope">
                 <el-image
@@ -18,16 +17,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-// import pageSearch from '@/components/page-search/page-search.vue'
 import pageContent from '@/components/page-content/page-content.vue'
-// import { searchFormConfig } from './config/search-config'
 import { contentConfig } from './config/content-config'
 
 export default defineComponent({
     name: 'goods',
     components: {
         pageContent
-        // pageSearch
     },
     setup() {
         return { contentConfig }

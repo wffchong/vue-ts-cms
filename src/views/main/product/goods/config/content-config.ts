@@ -19,7 +19,5 @@ export const contentConfig = {
             slotName: 'updateAt'
         },
         { label: '操作', minWidth: '120', slotName: 'handler' }
-    ],
-    showIndexColumn: true,
-    showSelectColumn: true
+    ]
 }

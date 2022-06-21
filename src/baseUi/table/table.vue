@@ -8,15 +8,15 @@
                 </div>
             </slot>
         </div>
-        <el-table :data="listData" border style="width: 100%" @selection-change="handleSelectionChange">
-            <el-table-column v-if="isShowIndex" type="selection" width="50" align="center"></el-table-column>
-            <el-table-column
-                v-if="isShowSelection"
-                type="index"
-                label="序号"
-                align="center"
-                width="80"
-            ></el-table-column>
+        <el-table
+            :data="listData"
+            border
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+            v-bind="childrenProps"
+        >
+            <el-table-column v-if="isShowSelection" type="selection" width="50" align="center"></el-table-column>
+            <el-table-column v-if="isShowIndex" type="index" label="序号" align="center" width="80"></el-table-column>
             <el-table-column
                 v-for="propItem in propList"
                 :key="propItem.prop"
@@ -88,6 +88,10 @@ export default defineComponent({
         showFooter: {
             type: Boolean,
             default: true
+        },
+        childrenProps: {
+            type: Object,
+            default: () => ({})
         }
     },
     emits: ['update:page'],
