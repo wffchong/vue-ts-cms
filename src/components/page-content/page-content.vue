@@ -3,7 +3,7 @@
         <wff-table :listData="dataList" :listCount="dataListCount" v-bind="contentConfig" v-model:page="pageInfo">
             <!-- header中的插槽 -->
             <template #headerHandler>
-                <el-button type="primary" size="medium">新建用户</el-button>
+                <el-button v-if="isCreate" type="primary" size="medium">新建用户</el-button>
             </template>
             <!-- 列中的插槽 -->
             <template #status="scope">
@@ -19,8 +19,8 @@
             </template>
             <template #handler>
                 <div class="handle-btns">
-                    <el-button icon="edit" size="mini" type="text">编辑</el-button>
-                    <el-button icon="delete" size="mini" type="text">删除</el-button>
+                    <el-button v-if="isUpdate" icon="edit" size="mini" type="text">编辑</el-button>
+                    <el-button v-if="isDelete" icon="delete" size="mini" type="text">删除</el-button>
                 </div>
             </template>
 
@@ -38,6 +38,7 @@
 import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import WffTable from '@/baseUi/table/table.vue'
+import { usePermission } from '@/hooks/usePermission'
 
 export default defineComponent({
     components: {
@@ -62,6 +63,7 @@ export default defineComponent({
         watch(pageInfo, () => getPageData())
 
         const getPageData = (queryInfo: any = {}) => {
+            if (!isQuery) return
             store.dispatch('system/getPageListAction', {
                 pageName: props.pageName,
                 queryInfo: {
@@ -85,7 +87,13 @@ export default defineComponent({
             return true
         })
 
-        return { dataList, getPageData, pageInfo, dataListCount, otherPropSlots }
+        // 获取用户的权限按钮
+        const isCreate = usePermission(props.pageName, 'create')
+        const isUpdate = usePermission(props.pageName, 'update')
+        const isDelete = usePermission(props.pageName, 'delete')
+        const isQuery = usePermission(props.pageName, 'query')
+
+        return { dataList, getPageData, pageInfo, dataListCount, otherPropSlots, isCreate, isUpdate, isDelete, isQuery }
     }
 })
 </script>

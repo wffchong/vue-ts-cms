@@ -7,14 +7,15 @@ import localCache from '@/utils/localCache'
 import router from '@/router'
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { mapMenusToPermissions, mapMenusToRoutes } from '@/utils/map-menus'
 
 const loginModule: Module<ILoginState, IRootState> = {
     namespaced: true,
     state: {
         token: '',
         userInfo: {} as IUserInfo,
-        userMenus: [] as IUserMenus[]
+        userMenus: [] as IUserMenus[],
+        permissions: []
     },
     actions: {
         async accountLoginAction({ commit }, payload) {
@@ -83,6 +84,10 @@ const loginModule: Module<ILoginState, IRootState> = {
 
             const routes = mapMenusToRoutes(state.userMenus)
             routes.forEach((route) => router.addRoute('main', route))
+
+            // 获取用户按钮的权限
+            const permissions = mapMenusToPermissions(state.userMenus)
+            state.permissions = permissions
         }
     },
     getters: {}
