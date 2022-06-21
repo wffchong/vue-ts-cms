@@ -12,6 +12,6 @@ export interface IFormItem {
     type: FormItemType
     label: string
     placeholder?: string
-    options?: { title: string; value: string }[]
+    options?: { title: string; value: number }[]
     otherOptions?: { startPlaceholder: string; endPlaceholder: string; type: string }
 }

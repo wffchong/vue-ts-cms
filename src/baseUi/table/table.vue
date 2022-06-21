@@ -9,14 +9,21 @@
             </slot>
         </div>
         <el-table :data="listData" border style="width: 100%" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="50" align="center"></el-table-column>
-            <el-table-column type="index" label="序号" align="center" width="80"></el-table-column>
+            <el-table-column v-if="isShowIndex" type="selection" width="50" align="center"></el-table-column>
+            <el-table-column
+                v-if="isShowSelection"
+                type="index"
+                label="序号"
+                align="center"
+                width="80"
+            ></el-table-column>
             <el-table-column
                 v-for="propItem in propList"
                 :key="propItem.prop"
                 :label="propItem.label"
                 :min-width="propItem.minWidth"
                 align="center"
+                show-overflow-tooltip
             >
                 <template #default="scope">
                     <slot :name="propItem.slotName" :row="scope.row">
@@ -59,6 +66,14 @@ export default defineComponent({
         title: {
             type: String,
             default: ''
+        },
+        isShowIndex: {
+            type: Boolean,
+            default: true
+        },
+        isShowSelection: {
+            type: Boolean,
+            default: true
         }
     },
     setup() {
