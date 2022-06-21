@@ -21,7 +21,6 @@ const systemModule: Module<ISystemState, IRootState> = {
             const result = await getPageListData(pageUrl, queryInfo)
             const { list, totalCount } = result.data
             const changePageName = pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
-            console.log(changePageName)
             commit(`change${changePageName}List`, list)
             commit(`change${changePageName}Count`, totalCount)
         }
@@ -45,6 +44,12 @@ const systemModule: Module<ISystemState, IRootState> = {
             // 这里直接返回一个函数，这样可以动态传pageName
             return (pageName: string) => {
                 return state[`${pageName}List` as keyof ISystemState]
+            }
+        },
+        pageListCount(state: ISystemState) {
+            // 这里直接返回一个函数，这样可以动态传pageName
+            return (pageName: string) => {
+                return state[`${pageName}Count` as keyof ISystemState]
             }
         }
     }

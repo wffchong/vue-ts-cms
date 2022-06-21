@@ -1,6 +1,6 @@
 <template>
     <div class="page-content">
-        <wff-table :listData="dataList" v-bind="contentConfig">
+        <wff-table :listData="dataList" :listCount="dataListCount" v-bind="contentConfig" v-model:page="pageInfo">
             <!-- header中的插槽 -->
             <template #headerHandler>
                 <el-button type="primary" size="medium">新建用户</el-button>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import WffTable from '@/baseUi/table/table.vue'
 
@@ -48,21 +48,28 @@ export default defineComponent({
     },
     setup(props) {
         const store = useStore()
-        console.log(props.pageName)
 
-        store.dispatch('system/getPageListAction', {
-            pageName: props.pageName,
-            queryInfo: {
-                offset: 0,
-                size: 10
-            }
-        })
+        // 将pageInfo双向绑定到table上
+        const pageInfo = ref({ currentPage: 0, pageSize: 10 })
 
-        // const dataList = computed(() => store.state.system.usersList)
+        watch(pageInfo, () => getPageData())
+
+        const getPageData = (queryInfo: any = {}) => {
+            store.dispatch('system/getPageListAction', {
+                pageName: props.pageName,
+                queryInfo: {
+                    offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+                    size: pageInfo.value.pageSize,
+                    ...queryInfo
+                }
+            })
+        }
+
+        getPageData()
         const dataList = computed(() => store.getters[`system/pageListData`](props.pageName))
+        const dataListCount = computed(() => store.getters[`system/pageListCount`](props.pageName))
 
-        console.log(dataList)
-        return { dataList }
+        return { dataList, getPageData, pageInfo, dataListCount }
     }
 })
 </script>

@@ -37,11 +37,11 @@
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="1"
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
+                    :current-page="page.currentPage + 1"
+                    :page-sizes="[10, 20, 30]"
+                    :page-size="page.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="400"
+                    :total="listCount"
                 >
                 </el-pagination>
             </slot>
@@ -74,19 +74,28 @@ export default defineComponent({
         isShowSelection: {
             type: Boolean,
             default: true
+        },
+        page: {
+            type: Object,
+            default: () => ({ currentPage: 0, pageSize: 10 })
+        },
+        listCount: {
+            type: Number,
+            default: 0
         }
     },
-    setup() {
+    emits: ['update:page'],
+    setup(props, { emit }) {
         const handleSelectionChange = (tableList: IUserList[]) => {
             console.log(tableList)
         }
 
         const handleSizeChange = (val: number) => {
-            console.log(`${val} items per page`)
+            emit('update:page', { ...props.page, pageSize: val })
         }
 
         const handleCurrentChange = (val: number) => {
-            console.log(`current page: ${val}`)
+            emit('update:page', { ...props.page, currentPage: val - 1 })
         }
 
         return {

@@ -28,7 +28,7 @@ export default defineComponent({
             required: true
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         // 拿到配置中的formItems
         const formItems = props.searchFormConfig.formItems ?? []
 
@@ -44,10 +44,11 @@ export default defineComponent({
 
         const handleReset = () => {
             formData.value = formOriginData
+            emit('clickResetBtn')
         }
 
         const handleQuery = () => {
-            console.log('搜索')
+            emit('clickQueryBtn', formData.value)
         }
 
         return {
