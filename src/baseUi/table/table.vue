@@ -34,16 +34,18 @@
         </el-table>
         <div class="footer">
             <slot name="footer">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="page.currentPage + 1"
-                    :page-sizes="[10, 20, 30]"
-                    :page-size="page.pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="listCount"
-                >
-                </el-pagination>
+                <template v-if="showFooter">
+                    <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="page.currentPage + 1"
+                        :page-sizes="[10, 20, 30]"
+                        :page-size="page.pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="listCount"
+                    >
+                    </el-pagination>
+                </template>
             </slot>
         </div>
     </div>
@@ -82,6 +84,10 @@ export default defineComponent({
         listCount: {
             type: Number,
             default: 0
+        },
+        showFooter: {
+            type: Boolean,
+            default: true
         }
     },
     emits: ['update:page'],

@@ -23,6 +23,13 @@
                     <el-button icon="delete" size="mini" type="text">删除</el-button>
                 </div>
             </template>
+
+            <!-- 动态插槽 -->
+            <template v-for="item in otherPropSlots" #[item.slotName]="scope">
+                <template v-if="item.slotName">
+                    <slot :name="item.slotName" :row="scope.row"></slot>
+                </template>
+            </template>
         </wff-table>
     </div>
 </template>
@@ -69,7 +76,16 @@ export default defineComponent({
         const dataList = computed(() => store.getters[`system/pageListData`](props.pageName))
         const dataListCount = computed(() => store.getters[`system/pageListCount`](props.pageName))
 
-        return { dataList, getPageData, pageInfo, dataListCount }
+        // 处理插槽
+        const otherPropSlots = props.contentConfig?.propList.filter((item: any) => {
+            if (item.slotName === 'status') return false
+            if (item.slotName === 'createAt') return false
+            if (item.slotName === 'updateAt') return false
+            if (item.slotName === 'handler') return false
+            return true
+        })
+
+        return { dataList, getPageData, pageInfo, dataListCount, otherPropSlots }
     }
 })
 </script>

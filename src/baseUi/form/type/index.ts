@@ -5,6 +5,7 @@ export interface IForm {
     formItems: IFormItem[]
     colLayout?: any
     itemLayout?: any
+    showFooter?: boolean
 }
 
 export interface IFormItem {
