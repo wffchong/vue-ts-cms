@@ -57,6 +57,12 @@ export default defineComponent({
     setup(props) {
         const store = useStore()
 
+        // 获取用户的权限按钮
+        const isCreate = usePermission(props.pageName, 'create')
+        const isUpdate = usePermission(props.pageName, 'update')
+        const isDelete = usePermission(props.pageName, 'delete')
+        const isQuery = usePermission(props.pageName, 'query')
+
         // 将pageInfo双向绑定到table上
         const pageInfo = ref({ currentPage: 0, pageSize: 10 })
 
@@ -87,13 +93,7 @@ export default defineComponent({
             return true
         })
 
-        // 获取用户的权限按钮
-        const isCreate = usePermission(props.pageName, 'create')
-        const isUpdate = usePermission(props.pageName, 'update')
-        const isDelete = usePermission(props.pageName, 'delete')
-        const isQuery = usePermission(props.pageName, 'query')
-
-        return { dataList, getPageData, pageInfo, dataListCount, otherPropSlots, isCreate, isUpdate, isDelete, isQuery }
+        return { dataList, getPageData, pageInfo, dataListCount, otherPropSlots, isCreate, isUpdate, isDelete }
     }
 })
 </script>
