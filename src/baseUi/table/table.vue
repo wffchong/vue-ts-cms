@@ -15,7 +15,7 @@
             @selection-change="handleSelectionChange"
             v-bind="childrenProps"
         >
-            <el-table-column v-if="isShowSelection" type="selection" width="50" align="center"></el-table-column>
+            <el-table-column v-if="isShowSelection" type="selection" width="60" align="center"></el-table-column>
             <el-table-column v-if="isShowIndex" type="index" label="序号" align="center" width="80"></el-table-column>
             <el-table-column
                 v-for="propItem in propList"
@@ -24,6 +24,7 @@
                 :min-width="propItem.minWidth"
                 align="center"
                 show-overflow-tooltip
+                class-name="table-column"
             >
                 <template #default="scope">
                     <slot :name="propItem.slotName" :row="scope.row">
@@ -117,7 +118,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .header {
     display: flex;
     height: 45px;
@@ -133,6 +134,11 @@ export default defineComponent({
     .handler {
         align-items: center;
     }
+}
+
+// 样式穿透
+/deep/ .table-column {
+    padding: 12px 0 !important;
 }
 
 .footer {

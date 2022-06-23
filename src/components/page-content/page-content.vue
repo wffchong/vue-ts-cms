@@ -3,7 +3,7 @@
         <wff-table :listData="dataList" :listCount="dataListCount" v-bind="contentConfig" v-model:page="pageInfo">
             <!-- header中的插槽 -->
             <template #headerHandler>
-                <el-button v-if="isCreate" type="primary" size="medium">新建用户</el-button>
+                <el-button v-if="isCreate" type="primary">新建用户</el-button>
             </template>
             <!-- 列中的插槽 -->
             <template #status="scope">
@@ -12,15 +12,15 @@
                 </el-button>
             </template>
             <template #createAt="scope">
-                <strong>{{ $filters.format(scope.row.createAt) }}</strong>
+                <span>{{ $filters.format(scope.row.createAt) }}</span>
             </template>
             <template #updateAt="scope">
-                <strong>{{ $filters.format(scope.row.updateAt) }}</strong>
+                <span>{{ $filters.format(scope.row.updateAt) }}</span>
             </template>
             <template #handler>
                 <div class="handle-btns">
-                    <el-button v-if="isUpdate" icon="edit" size="mini" type="text">编辑</el-button>
-                    <el-button v-if="isDelete" icon="delete" size="mini" type="text">删除</el-button>
+                    <el-button v-if="isUpdate" icon="edit" size="small" text type="primary">编辑</el-button>
+                    <el-button v-if="isDelete" icon="delete" size="small" text type="primary">删除</el-button>
                 </div>
             </template>
 
@@ -102,5 +102,10 @@ export default defineComponent({
 .page-content {
     padding: 20px;
     border-top: 20px solid #f5f5f5;
+    .handle-btns {
+        .el-button--small {
+            padding: 7px 0;
+        }
+    }
 }
 </style>

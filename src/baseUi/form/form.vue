@@ -7,7 +7,7 @@
             <el-row>
                 <template v-for="formItem in formItems" :key="formItem.label">
                     <el-col v-bind="colLayout">
-                        <el-form-item :label="formItem.label" :style="itemStyle" :rules="formItem.rules">
+                        <el-form-item :label="formItem.label" :style="itemStyle">
                             <template v-if="formItem.type === 'input' || formItem.type === 'password'">
                                 <el-input
                                     :placeholder="formItem.placeholder"
