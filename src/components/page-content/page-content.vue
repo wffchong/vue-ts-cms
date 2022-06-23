@@ -17,10 +17,19 @@
             <template #updateAt="scope">
                 <span>{{ $filters.format(scope.row.updateAt) }}</span>
             </template>
-            <template #handler>
+            <template #handler="scope">
                 <div class="handle-btns">
                     <el-button v-if="isUpdate" icon="edit" size="small" text type="primary">编辑</el-button>
-                    <el-button v-if="isDelete" icon="delete" size="small" text type="primary">删除</el-button>
+                    <el-button
+                        v-if="isDelete"
+                        icon="delete"
+                        size="small"
+                        type="primary"
+                        text
+                        @click="open(scope.row.id)"
+                    >
+                        删除
+                    </el-button>
                 </div>
             </template>
 
@@ -39,6 +48,8 @@ import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import WffTable from '@/baseUi/table/table.vue'
 import { usePermission } from '@/hooks/usePermission'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import 'element-plus/theme-chalk/el-message-box.css'
 
 export default defineComponent({
     components: {
@@ -93,7 +104,47 @@ export default defineComponent({
             return true
         })
 
-        return { dataList, getPageData, pageInfo, dataListCount, otherPropSlots, isCreate, isUpdate, isDelete }
+        // 删除
+        const open = (id: number) => {
+            ElMessageBox.confirm('你确定删除吗?', 'Warning', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                center: true
+            })
+                .then(() => {
+                    if (id < 10) {
+                        ElMessage({
+                            type: 'error',
+                            message: 'id小于10不允许删除'
+                        })
+                    } else {
+                        store.dispatch('system/deletePageListAction', { pageName: props.pageName, id })
+                        ElMessage({
+                            type: 'success',
+                            message: '删除成功'
+                        })
+                    }
+                })
+                .catch(() => {
+                    ElMessage({
+                        type: 'info',
+                        message: '取消删除'
+                    })
+                })
+        }
+
+        return {
+            dataList,
+            getPageData,
+            pageInfo,
+            dataListCount,
+            otherPropSlots,
+            isCreate,
+            isUpdate,
+            isDelete,
+            open
+        }
     }
 })
 </script>

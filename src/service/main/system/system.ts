@@ -9,3 +9,10 @@ export function getPageListData(url: string, queryInfo: any) {
         data: queryInfo
     })
 }
+
+// 删除table中的数据
+export function deletePageListData(url: string, id: number) {
+    return wffRequest.delete({
+        url: `${url}/${id}`
+    })
+}
