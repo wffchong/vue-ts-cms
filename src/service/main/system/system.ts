@@ -12,7 +12,7 @@ export function getPageListData(url: string, queryInfo: any) {
 
 // 删除table中的数据
 export function deletePageListData(url: string, id: number) {
-    return wffRequest.delete({
+    return wffRequest.delete<ApiResponse>({
         url: `${url}/${id}`
     })
 }

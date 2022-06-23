@@ -27,16 +27,11 @@ const systemModule: Module<ISystemState, IRootState> = {
             commit(`change${changePageName}List`, list)
             commit(`change${changePageName}Count`, totalCount)
         },
-        async deletePageListAction({ dispatch }, payload: any) {
-            const { pageName, id } = payload
-            await deletePageListData(pageName, id)
-            // 重新请求数据
-            dispatch('getPageListAction', {
-                pageName,
-                queryInfo: {
-                    offset: 0,
-                    size: 10
-                }
+        deletePageListAction(_, payload: any) {
+            return new Promise((resolve) => {
+                const { pageName, id } = payload
+                const res = deletePageListData(pageName, id)
+                resolve(res)
             })
         }
     },

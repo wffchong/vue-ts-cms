@@ -112,14 +112,25 @@ export default defineComponent({
                 type: 'warning',
                 center: true
             })
-                .then(() => {
-                    if (id < 10) {
+                .then(async () => {
+                    const { code, data } = await store.dispatch('system/deletePageListAction', {
+                        pageName: props.pageName,
+                        id
+                    })
+
+                    if (code === -1002) {
                         ElMessage({
                             type: 'error',
-                            message: 'id小于10不允许删除'
+                            message: data
                         })
                     } else {
-                        store.dispatch('system/deletePageListAction', { pageName: props.pageName, id })
+                        store.dispatch('getPageListAction', {
+                            pageName: props.pageName,
+                            queryInfo: {
+                                offset: 0,
+                                size: 10
+                            }
+                        })
                         ElMessage({
                             type: 'success',
                             message: '删除成功'
