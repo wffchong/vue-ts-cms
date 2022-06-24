@@ -6,6 +6,7 @@ export interface IForm {
     colLayout?: any
     itemLayout?: any
     showFooter?: boolean
+    itemStyle?: object
 }
 
 export interface IFormItem {
@@ -14,5 +15,6 @@ export interface IFormItem {
     label: string
     placeholder?: string
     options?: { title: string; value: number }[]
+    isHidden?: boolean
     otherOptions?: { startPlaceholder: string; endPlaceholder: string; type: string }
 }

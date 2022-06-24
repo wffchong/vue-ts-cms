@@ -3,7 +3,7 @@
         <wff-table :listData="dataList" :listCount="dataListCount" v-bind="contentConfig" v-model:page="pageInfo">
             <!-- header中的插槽 -->
             <template #headerHandler>
-                <el-button v-if="isCreate" type="primary">新建用户</el-button>
+                <el-button v-if="isCreate" type="primary" @click="handleNewClick">新建用户</el-button>
             </template>
             <!-- 列中的插槽 -->
             <template #status="scope">
@@ -19,7 +19,16 @@
             </template>
             <template #handler="scope">
                 <div class="handle-btns">
-                    <el-button v-if="isUpdate" icon="edit" size="small" text type="primary">编辑</el-button>
+                    <el-button
+                        v-if="isUpdate"
+                        icon="edit"
+                        size="small"
+                        text
+                        type="primary"
+                        @click="handleEditClick(scope.row)"
+                    >
+                        编辑
+                    </el-button>
                     <el-button
                         v-if="isDelete"
                         icon="delete"
@@ -65,7 +74,7 @@ export default defineComponent({
             required: true
         }
     },
-    setup(props) {
+    setup(props, { emit }) {
         const store = useStore()
 
         // 获取用户的权限按钮
@@ -145,6 +154,16 @@ export default defineComponent({
                 })
         }
 
+        // 新建
+        const handleNewClick = () => {
+            emit('clickNewBtn')
+        }
+
+        // 编辑
+        const handleEditClick = (item: any) => {
+            emit('clickEditBtn', item)
+        }
+
         return {
             dataList,
             getPageData,
@@ -154,7 +173,9 @@ export default defineComponent({
             isCreate,
             isUpdate,
             isDelete,
-            open
+            open,
+            handleNewClick,
+            handleEditClick
         }
     }
 })

@@ -16,3 +16,19 @@ export function deletePageListData(url: string, id: number) {
         url: `${url}/${id}`
     })
 }
+
+// 新增table中的数据
+export function addPageListData(url: string, newData: any) {
+    return wffRequest.post<ApiResponse>({
+        url,
+        data: newData
+    })
+}
+
+// 编辑table中的数据
+export function editPageListData(url: string, editData: any) {
+    return wffRequest.patch<ApiResponse>({
+        url,
+        data: editData
+    })
+}

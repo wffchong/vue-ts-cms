@@ -19,5 +19,7 @@ app.use(globalRegister)
 
 // 登录持久化
 store.dispatch('login/loadLocalLogin')
+// 获取部门和角色数据
+store.dispatch('getInitialDataAction')
 
 app.use(store).use(router).mount('#app')

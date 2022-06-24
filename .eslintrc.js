@@ -20,6 +20,8 @@ module.exports = {
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         // 关闭驼峰命名规则
-        'vue/multi-word-component-names': 0
+        'vue/multi-word-component-names': 0,
+        // 允许非空断言
+        '@typescript-eslint/no-non-null-assertion': 'off'
     }
 }

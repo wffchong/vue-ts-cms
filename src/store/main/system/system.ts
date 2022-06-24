@@ -1,7 +1,7 @@
 import type { Module } from 'vuex'
 import { IRootState } from '@/store/type'
 import { ISystemState } from './type'
-import { getPageListData, deletePageListData } from '@/service/main/system/system'
+import { getPageListData, deletePageListData, addPageListData, editPageListData } from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
     namespaced: true,
@@ -32,6 +32,34 @@ const systemModule: Module<ISystemState, IRootState> = {
                 const { pageName, id } = payload
                 const res = deletePageListData(pageName, id)
                 resolve(res)
+            })
+        },
+        async addPageListAction({ dispatch }, payload: any) {
+            const { pageName, newData } = payload
+            const pageUrl = `/${pageName}`
+            await addPageListData(pageUrl, newData)
+
+            // 请求新的数据
+            dispatch('getPageListAction', {
+                pageName,
+                queryInfo: {
+                    offset: 0,
+                    size: 10
+                }
+            })
+        },
+        async editPageListAction({ dispatch }, payload: any) {
+            const { pageName, editData, id } = payload
+            const pageUrl = `/${pageName}/${id}`
+            await editPageListData(pageUrl, editData)
+
+            // 请求新的数据
+            dispatch('getPageListAction', {
+                pageName,
+                queryInfo: {
+                    offset: 0,
+                    size: 10
+                }
             })
         }
     },
