@@ -18,7 +18,7 @@ const loginModule: Module<ILoginState, IRootState> = {
         permissions: []
     },
     actions: {
-        async accountLoginAction({ commit }, payload) {
+        async accountLoginAction({ commit, dispatch }, payload) {
             try {
                 // 登录获取token和id
                 const loginResult = await accountLoginRequest({ ...payload })
@@ -26,6 +26,9 @@ const loginModule: Module<ILoginState, IRootState> = {
 
                 commit('changeToken', token)
                 localCache.setCache('token', token)
+
+                // 获取部门和角色数据 --> 放在获取到token后执行，防止这部先执行
+                dispatch('getInitialDataAction', null, { root: true })
 
                 // 登录过后在获取用户信息
                 const userInfoResult = await requestUserInfoById(id)
@@ -55,10 +58,11 @@ const loginModule: Module<ILoginState, IRootState> = {
             }
         },
         // 登录持久化
-        loadLocalLogin({ commit }) {
+        loadLocalLogin({ commit, dispatch }) {
             const token = localCache.getCache('token')
             if (token) {
                 commit('changeToken', token)
+                dispatch('getInitialDataAction', null, { root: true })
             }
             const userInfo = localCache.getCache('userInfo')
             if (userInfo) {

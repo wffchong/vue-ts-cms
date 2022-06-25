@@ -13,7 +13,8 @@ const systemModule: Module<ISystemState, IRootState> = {
             roleCount: 0,
             goodsList: [],
             goodsCount: 0,
-            menuList: []
+            menuList: [],
+            menuCount: 0
         }
     },
     actions: {
@@ -84,6 +85,9 @@ const systemModule: Module<ISystemState, IRootState> = {
         },
         changeMenuList(state, list) {
             state.menuList = list
+        },
+        changeMenuCount(state, totalCount) {
+            state.menuCount = totalCount
         }
     },
     getters: {

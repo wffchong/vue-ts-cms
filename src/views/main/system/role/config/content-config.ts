@@ -1,5 +1,5 @@
 export const contentConfig = {
-    title: '用户列表',
+    title: '角色列表',
     propList: [
         {
             prop: 'name',

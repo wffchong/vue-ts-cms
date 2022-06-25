@@ -1,6 +1,7 @@
 <template>
     <el-dialog v-model="centerDialogVisible" title="新建用户" width="30%" center destroy-on-close>
         <wff-form v-bind="modalConfig" v-model="formData"></wff-form>
+        <slot></slot>
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="centerDialogVisible = false">取消</el-button>
@@ -31,6 +32,10 @@ export default defineComponent({
         defaultInfo: {
             type: Object,
             default: () => ({})
+        },
+        otherInfo: {
+            type: Object,
+            default: () => ({})
         }
     },
     setup(props) {
@@ -50,13 +55,13 @@ export default defineComponent({
             if (Object.keys(props.defaultInfo).length) {
                 store.dispatch('system/editPageListAction', {
                     pageName: props.pageName,
-                    editData: { ...formData.value },
+                    editData: { ...formData.value, ...props.otherInfo },
                     id: props.defaultInfo.id
                 })
             } else {
                 store.dispatch('system/addPageListAction', {
                     pageName: props.pageName,
-                    newData: { ...formData.value }
+                    newData: { ...formData.value, ...props.otherInfo }
                 })
             }
             centerDialogVisible.value = false

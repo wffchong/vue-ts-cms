@@ -9,7 +9,8 @@ export default createStore<IRootState>({
     state() {
         return {
             entireDepartment: [],
-            entireRole: []
+            entireRole: [],
+            entireMenu: []
         }
     },
     getters: {},
@@ -30,8 +31,12 @@ export default createStore<IRootState>({
 
             const { list: roleList } = roleResult.data
 
+            const menuResult = await getPageListData('/menu/list', {})
+            const { list: menuList } = menuResult.data
+
             commit('changeEntireDepartment', departmentList)
             commit('changeEntireRole', roleList)
+            commit('changeEntireMenu', menuList)
         }
     },
     mutations: {
@@ -40,6 +45,9 @@ export default createStore<IRootState>({
         },
         changeEntireRole(state, list) {
             state.entireRole = list
+        },
+        changeEntireMenu(state, list) {
+            state.entireMenu = list
         }
     },
     modules: {

@@ -121,4 +121,20 @@ export function mapMenusToPermissions(userMenus: IUserMenus[]) {
     return permissions
 }
 
+// 处理叶子节点
+export function menuMapLeafKeys(menuList: any) {
+    const leafKeys: number[] = []
+    const _recurseGetLeaf = (menus: any) => {
+        for (const menu of menus) {
+            if (menu.children) {
+                _recurseGetLeaf(menu.children)
+            } else {
+                leafKeys.push(menu.id)
+            }
+        }
+    }
+    _recurseGetLeaf(menuList)
+    return leafKeys
+}
+
 export { firstMenu }
