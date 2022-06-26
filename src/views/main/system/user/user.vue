@@ -6,13 +6,13 @@
             @clickResetBtn="handleResetClick"
         />
         <page-content
+            ref="pageContentRef"
             :contentConfig="contentConfig"
             pageName="users"
-            ref="pageContentRef"
             @clickNewBtn="handleNewData"
             @clickEditBtn="handleEditData"
         />
-        <page-modal :modalConfig="modalConfigRef" :defaultInfo="defaultInfo" pageName="users" ref="pageModalRef" />
+        <page-modal ref="pageModalRef" :modalConfig="modalConfigRef" :defaultInfo="defaultInfo" pageName="users" />
     </div>
 </template>
 
@@ -29,7 +29,7 @@ import { usePageModal } from '@/hooks/usePageModal'
 import { useStore } from '@/store'
 
 export default defineComponent({
-    name: 'user',
+    name: 'User',
     components: {
         PageSearch,
         PageContent,

@@ -2,7 +2,7 @@
     <div class="nav-menu">
         <div class="logo">
             <img class="img" src="~@/assets/img/logo.svg" alt="logo" />
-            <span class="title" v-if="!isShowSideMenu">Vue3+Ts</span>
+            <span v-if="!isShowSideMenu" class="title">Vue3+Ts</span>
         </div>
         <el-menu
             :default-active="defaultActive"
@@ -27,10 +27,10 @@
                         <!-- 子菜单 -->
                         <template v-if="item.children">
                             <el-menu-item
-                                @click="handleSubItemClick(subItem)"
                                 v-for="subItem in item.children"
                                 :key="subItem.id"
                                 :index="subItem.id + ''"
+                                @click="handleSubItemClick(subItem)"
                             >
                                 {{ subItem.name }}
                             </el-menu-item>

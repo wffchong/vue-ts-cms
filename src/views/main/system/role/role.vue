@@ -8,11 +8,11 @@
             @clickEditBtn="handleEditData"
         />
         <page-modal
+            ref="pageModalRef"
             :otherInfo="otherInfo"
             :modalConfig="modalConfig"
             :defaultInfo="defaultInfo"
             pageName="role"
-            ref="pageModalRef"
         >
             <div class="menu-tree">
                 <el-tree
@@ -42,7 +42,7 @@ import { ElTree } from 'element-plus'
 import { menuMapLeafKeys } from '@/utils/map-menus'
 
 export default defineComponent({
-    name: 'role',
+    name: 'Role',
     components: {
         PageSearch,
         PageContent,

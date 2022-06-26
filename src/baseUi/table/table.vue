@@ -12,8 +12,8 @@
             :data="listData"
             border
             style="width: 100%"
-            @selection-change="handleSelectionChange"
             v-bind="childrenProps"
+            @selection-change="handleSelectionChange"
         >
             <el-table-column v-if="isShowSelection" type="selection" width="60" align="center"></el-table-column>
             <el-table-column v-if="isShowIndex" type="index" label="序号" align="center" width="80"></el-table-column>
@@ -37,13 +37,13 @@
             <slot name="footer">
                 <template v-if="showFooter">
                     <el-pagination
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
                         :current-page="page.currentPage + 1"
                         :page-sizes="[10, 20, 30]"
                         :page-size="page.pageSize"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="listCount"
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
                     >
                     </el-pagination>
                 </template>

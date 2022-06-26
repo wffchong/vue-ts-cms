@@ -1,7 +1,7 @@
 <template>
     <div class="login-panel">
         <h1 class="title">后台管理系统</h1>
-        <el-tabs type="border-card" stretch v-model="currentTab">
+        <el-tabs v-model="currentTab" type="border-card" stretch>
             <el-tab-pane name="account">
                 <template #label>
                     <span><i class="el-icon-user-solid"></i> 账号登录</span>

@@ -23,10 +23,10 @@ export default defineComponent({
         UserInfo,
         Breadcrumb
     },
-    emits: ['changIsShowSideMenu'],
     props: {
         isShowSideMenu: Boolean
     },
+    emits: ['changIsShowSideMenu'],
     setup(props, { emit }) {
         const handleIconClick = () => {
             emit('changIsShowSideMenu', !props.isShowSideMenu)

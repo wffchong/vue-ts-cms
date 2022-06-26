@@ -25,6 +25,8 @@ module.exports = {
         // 允许非空断言
         '@typescript-eslint/no-non-null-assertion': 'off',
         // 允许驼峰命名
-        'vue/attribute-hyphenation': 'off'
+        'vue/attribute-hyphenation': 'off',
+        // 允许事件驼峰命名
+        'vue/v-on-event-hyphenation': 'off'
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="page-content">
-        <wff-table :listData="dataList" :listCount="dataListCount" v-bind="contentConfig" v-model:page="pageInfo">
+        <wff-table v-bind="contentConfig" v-model:page="pageInfo" :listData="dataList" :listCount="dataListCount">
             <!-- header中的插槽 -->
             <template #headerHandler>
                 <el-button v-if="isCreate" type="primary" @click="handleNewClick">新建用户</el-button>
