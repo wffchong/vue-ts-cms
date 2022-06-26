@@ -5,7 +5,8 @@ module.exports = {
     },
     extends: [
         'plugin:vue/vue3-essential',
-        'eslint:recommended',
+        // 'eslint:recommended',
+        'plugin:vue/vue3-recommended',
         '@vue/typescript/recommended',
         '@vue/prettier',
         '@vue/prettier/@typescript-eslint',
@@ -22,6 +23,8 @@ module.exports = {
         // 关闭驼峰命名规则
         'vue/multi-word-component-names': 0,
         // 允许非空断言
-        '@typescript-eslint/no-non-null-assertion': 'off'
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        // 允许驼峰命名
+        'vue/attribute-hyphenation': 'off'
     }
 }
