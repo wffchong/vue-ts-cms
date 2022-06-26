@@ -60,6 +60,12 @@ import { usePermission } from '@/hooks/usePermission'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import 'element-plus/theme-chalk/el-message-box.css'
 
+declare module '@vue/runtime-core' {
+    interface ComponentCustomProperties {
+        $filters: any
+    }
+}
+
 export default defineComponent({
     components: {
         WffTable
@@ -74,6 +80,7 @@ export default defineComponent({
             required: true
         }
     },
+    emits: ['clickNewBtn', 'clickEditBtn'],
     setup(props, { emit }) {
         const store = useStore()
 

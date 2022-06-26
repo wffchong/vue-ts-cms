@@ -28,6 +28,7 @@ export default defineComponent({
             required: true
         }
     },
+    emits: ['clickResetBtn', 'clickQueryBtn'],
     setup(props, { emit }) {
         // 拿到配置中的formItems
         const formItems = props.searchFormConfig.formItems ?? []
