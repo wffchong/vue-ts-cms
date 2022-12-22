@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Phone } from '@/types/login'
+import type { Login } from '@/service/interface'
 import type { FormRules, ElForm } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
-const phone = reactive<Phone>({
+const phone = reactive<Login.ReqPhoneLoginForm>({
 	phone: '',
 	verifyCode: ''
 })

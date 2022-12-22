@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { Account } from '@/types/login'
+import type { Login } from '@/service/interface'
 import type { FormRules, ElForm } from 'element-plus'
 import { ElMessage } from 'element-plus'
+import { accountLoginRequest } from '@/service/modules/login'
 
-const account = reactive<Account>({
-	name: '',
-	password: ''
+const account = reactive<Login.ReqAccountLoginForm>({
+	name: 'coderwhy',
+	password: '123456'
 })
 
 const accountRules: FormRules = {
@@ -34,6 +35,9 @@ const loginAction = async () => {
 	await formRef.value.validate(valid => {
 		if (valid) {
 			// 执行登录逻辑
+			accountLoginRequest(account).then(res => {
+				console.log(res)
+			})
 		} else {
 			ElMessage.error('请输入正确的格式')
 		}
