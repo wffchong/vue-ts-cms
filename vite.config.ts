@@ -10,6 +10,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
 
 import eslintPlugin from 'vite-plugin-eslint'
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
@@ -43,7 +44,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 				]
 			}),
 			// * EsLint 报错信息显示在浏览器界面上
-			eslintPlugin()
+			eslintPlugin(),
+			// * name 可以写在 script 标签上
+			VueSetupExtend()
 		]
 	}
 })

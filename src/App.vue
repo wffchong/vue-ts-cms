@@ -1,9 +1,7 @@
-<script setup lang="ts">
-const a = 1
-</script>
+<script setup lang="ts"></script>
 
 <template>
-	<div>123</div>
+	<router-view></router-view>
 </template>
 
 <style scoped lang="less"></style>
