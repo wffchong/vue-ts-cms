@@ -9,6 +9,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // 配置 element-plus 例如el-message等组件自动导入样式
 import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-import'
 
+import eslintPlugin from 'vite-plugin-eslint'
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 	console.log(mode)
@@ -39,7 +41,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 						}
 					}
 				]
-			})
+			}),
+			// * EsLint 报错信息显示在浏览器界面上
+			eslintPlugin()
 		]
 	}
 })
