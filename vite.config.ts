@@ -1,5 +1,6 @@
 import { ConfigEnv, defineConfig, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { resolve } from 'path'
 
 // element-plus 按需导入
 import AutoImport from 'unplugin-auto-import/vite'
@@ -12,10 +13,17 @@ import { createStyleImportPlugin, ElementPlusResolve } from 'vite-plugin-style-i
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 	console.log(mode)
 	return {
+		base: './',
+		resolve: {
+			alias: {
+				'@': resolve(__dirname, './src')
+			}
+		},
 		plugins: [
 			vue(),
 			AutoImport({
-				resolvers: [ElementPlusResolver()]
+				resolvers: [ElementPlusResolver()],
+				imports: ['vue', 'vue-router']
 			}),
 			Components({
 				resolvers: [ElementPlusResolver()]
