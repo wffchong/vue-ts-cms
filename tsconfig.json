@@ -18,7 +18,9 @@
 		"esModuleInterop": true,
 		"lib": ["ESNext", "DOM"],
 		"skipLibCheck": true,
-		"noEmit": true
+		"noEmit": true,
+        // 导入从不用作值，必须使用 "import type"
+		"importsNotUsedAsValues": "error"
 	},
 	"include": [
 		"src/**/*.ts",
