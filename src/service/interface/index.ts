@@ -1,16 +1,16 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 // * 为实例添加拦截器
-export interface HttpInterceptors {
+export interface HttpInterceptors<T = AxiosResponse> {
 	requestSuccessFn: (config: AxiosRequestConfig) => AxiosRequestConfig
 	requestFailureFn: (error: any) => any
-	responseSuccessFn: (res: AxiosResponse) => AxiosResponse
+	responseSuccessFn: (res: T) => T
 	responseFailureFn: (error: any) => any
 }
 
 // * 拓展 AxiosRequestConfig
-export interface HttpRequestConfig extends AxiosRequestConfig {
-	interceptors?: Partial<HttpInterceptors>
+export interface HttpRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
+	interceptors?: Partial<HttpInterceptors<T>>
 }
 
 // * 登录模块

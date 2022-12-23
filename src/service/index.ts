@@ -7,7 +7,6 @@ export const httpRequest = new HttpRequest({
 	interceptors: {
 		requestSuccessFn(res) {
 			console.log('实例请求拦截器')
-
 			console.log(res)
 			return res
 		},

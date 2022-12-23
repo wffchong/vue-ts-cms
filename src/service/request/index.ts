@@ -7,17 +7,6 @@ class HttpRequest {
 	constructor(config: HttpRequestConfig) {
 		this.instance = axios.create(config)
 
-		// 针对实例处理拦截器
-		this.instance.interceptors.request.use(
-			config.interceptors?.requestSuccessFn,
-			config.interceptors?.requestFailureFn
-		)
-
-		this.instance.interceptors.response.use(
-			config.interceptors?.responseSuccessFn,
-			config.interceptors?.responseFailureFn
-		)
-
 		// 为每个实例都添加拦截器，也就是全局拦截器
 		this.instance.interceptors.request.use(
 			(config: AxiosRequestConfig) => {
@@ -38,13 +27,33 @@ class HttpRequest {
 				console.log(error)
 			}
 		)
+
+		// 针对实例处理拦截器
+		this.instance.interceptors.request.use(
+			config.interceptors?.requestSuccessFn,
+			config.interceptors?.requestFailureFn
+		)
+
+		this.instance.interceptors.response.use(
+			config.interceptors?.responseSuccessFn,
+			config.interceptors?.responseFailureFn
+		)
 	}
 
-	request<T = any>(config: HttpRequestConfig) {
+	request<T = any>(config: HttpRequestConfig<T>) {
+		// 对接口的请求拦截
+		if (config.interceptors?.requestSuccessFn) {
+			config = config.interceptors.requestSuccessFn(config)
+		}
+
 		return new Promise<T>((resolve, reject) => {
 			this.instance
 				.request<any, T>(config)
 				.then(res => {
+					// 对接口的响应拦截处理
+					if (config.interceptors?.responseSuccessFn) {
+						res = config.interceptors.responseSuccessFn(res)
+					}
 					resolve(res)
 				})
 				.catch(error => {
@@ -53,16 +62,16 @@ class HttpRequest {
 		})
 	}
 
-	get<T = any>(config: HttpRequestConfig) {
+	get<T = any>(config: HttpRequestConfig<T>) {
 		return this.request<T>({ ...config, method: 'GET' })
 	}
-	post<T = any>(config: HttpRequestConfig) {
+	post<T = any>(config: HttpRequestConfig<T>) {
 		return this.request<T>({ ...config, method: 'POST' })
 	}
-	delete<T = any>(config: HttpRequestConfig) {
+	delete<T = any>(config: HttpRequestConfig<T>) {
 		return this.request<T>({ ...config, method: 'DELETE' })
 	}
-	patch<T = any>(config: HttpRequestConfig) {
+	patch<T = any>(config: HttpRequestConfig<T>) {
 		return this.request<T>({ ...config, method: 'PATCH' })
 	}
 }
