@@ -2,8 +2,9 @@
 import type { Login } from '@/service/interface'
 import type { FormRules, ElForm } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { accountLoginRequest } from '@/service/modules/login'
+import { useLoginStore } from '@/store/modules/login'
 
+const loginStore = useLoginStore()
 const account = reactive<Login.ReqAccountLoginForm>({
 	name: 'coderwhy',
 	password: '123456'
@@ -35,9 +36,7 @@ const loginAction = async () => {
 	await formRef.value.validate(valid => {
 		if (valid) {
 			// 执行登录逻辑
-			accountLoginRequest(account).then(res => {
-				console.log(res)
-			})
+			loginStore.loginAccountAction(account)
 		} else {
 			ElMessage.error('请输入正确的格式')
 		}

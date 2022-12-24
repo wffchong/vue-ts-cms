@@ -47,6 +47,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 			eslintPlugin(),
 			// * name 可以写在 script 标签上
 			VueSetupExtend()
-		]
+		],
+		server: {
+			open: true
+		}
 	}
 })

@@ -4,7 +4,7 @@ enum CacheType {
 }
 
 class Cache {
-	storage: Storage
+	private storage: Storage
 
 	constructor(type: CacheType) {
 		this.storage = type === CacheType.Local ? localStorage : sessionStorage

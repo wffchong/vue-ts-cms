@@ -13,6 +13,17 @@ export interface HttpRequestConfig<T = AxiosResponse> extends AxiosRequestConfig
 	interceptors?: Partial<HttpInterceptors<T>>
 }
 
+// * 请求响应参数(不包含data)
+export interface Result {
+	code: string
+	// msg: string
+}
+
+// * 请求响应参数(包含data)
+export interface ResultData<T = any> extends Result {
+	data: T
+}
+
 // * 登录模块
 export namespace Login {
 	export interface ReqAccountLoginForm {
@@ -28,4 +39,35 @@ export namespace Login {
 		name: string
 		token: string
 	}
+	export interface ReqGetUserInfo {
+		id: string
+	}
+	export interface Role {
+		id: number
+		name: string
+		intro: string
+		createAt: string
+		updateAt: string
+	}
+	export interface Department {
+		id: number
+		name: string
+		parentId: any
+		createAt: string
+		updateAt: string
+		leader: string
+	}
+	export interface ResGetUserInfo {
+		id: number
+		name: string
+		realname: string
+		cellphone: number
+		enable: number
+		createAt: string
+		updateAt: string
+		role: Role
+		department: Department
+	}
+	export type ResLoginType = ResultData<ResLogin>
+	export type ResGetUserInfoType = ResultData<ResGetUserInfo>
 }
