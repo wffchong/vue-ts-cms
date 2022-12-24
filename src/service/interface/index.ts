@@ -87,5 +87,6 @@ export namespace Login {
 	}
 	export type ResLoginType = ResultData<ResLogin>
 	export type ResGetUserInfoType = ResultData<ResGetUserInfo>
+	export type ResGetUserMenuByRoleIdType = ResultData<UserMenu[]>
 	export type ResGetUserMenuType = ResultData<ResGetUserMenu>
 }

@@ -2,6 +2,7 @@
 import { useLoginStore } from '@/store/modules/login'
 const loginStore = useLoginStore()
 const { userMenus } = loginStore
+console.log(userMenus)
 </script>
 
 <template>
