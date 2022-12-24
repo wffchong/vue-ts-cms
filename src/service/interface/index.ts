@@ -68,6 +68,24 @@ export namespace Login {
 		role: Role
 		department: Department
 	}
+	export interface ReqGetUserMenu {
+		id: string
+	}
+	export interface UserMenu {
+		id: number
+		name: string
+		type: number
+		url: string
+		icon: string
+		sort: number
+		createAt: string
+		updateAt: string
+		children: (UserMenu & { parentId: number })[]
+	}
+	export interface ResGetUserMenu {
+		list: UserMenu[]
+	}
 	export type ResLoginType = ResultData<ResLogin>
 	export type ResGetUserInfoType = ResultData<ResGetUserInfo>
+	export type ResGetUserMenuType = ResultData<ResGetUserMenu>
 }

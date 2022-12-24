@@ -4,5 +4,5 @@ import type { Login } from '@/service/interface'
 export interface LoginState {
 	token: string
 	userInfo: Login.ResGetUserInfo | null
-	userMenus: any
+	userMenus: Login.UserMenu[]
 }

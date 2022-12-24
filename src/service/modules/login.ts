@@ -13,3 +13,9 @@ export const getUserInfoById = (id: number) => {
 		url: `/users/${id}`
 	})
 }
+
+export const getUserMenu = () => {
+	return httpRequest.post<Login.ResGetUserMenuType>({
+		url: 'menu/list'
+	})
+}

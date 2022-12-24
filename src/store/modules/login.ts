@@ -2,9 +2,10 @@ import { defineStore } from 'pinia'
 import piniaPersistConfig from '@/config/piniaPersist'
 import type { LoginState } from '../interface'
 import type { Login } from '@/service/interface'
-import { accountLoginRequest, getUserInfoById } from '@/service/modules/login'
+import { accountLoginRequest, getUserInfoById, getUserMenu } from '@/service/modules/login'
 import { localCache } from '@/utils/cache'
 import { Constants } from '@/enums/constants'
+import router from '@/router'
 
 export const useLoginStore = defineStore({
 	id: 'LoginState',
@@ -23,6 +24,11 @@ export const useLoginStore = defineStore({
 
 			const { data: userInfoResultData } = await getUserInfoById(id)
 			this.userInfo = userInfoResultData
+
+			const { data: userMenuResultData } = await getUserMenu()
+			this.userMenus = userMenuResultData.list
+
+			router.push('/main')
 		}
 	},
 	persist: piniaPersistConfig('LoginState')
