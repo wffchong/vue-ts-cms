@@ -15,11 +15,12 @@ const phoneRules: FormRules = {
 
 const formRef = ref<InstanceType<typeof ElForm>>()
 
-const loginAction = async () => {
+const loginAction = async (isRemember: boolean) => {
 	if (!formRef.value) return
 	await formRef.value.validate(valid => {
 		if (valid) {
 			// 执行登录逻辑
+			console.log(isRemember)
 		} else {
 			ElMessage.error('请输入正确的格式')
 		}

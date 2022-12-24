@@ -3,6 +3,8 @@ import type { Login } from '@/service/interface'
 import type { FormRules, ElForm } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { useLoginStore } from '@/store/modules/login'
+import { localCache } from '@/utils/cache'
+import { Constants } from '@/enums/constants'
 
 const loginStore = useLoginStore()
 const account = reactive<Login.ReqAccountLoginForm>({
@@ -31,12 +33,26 @@ const accountRules: FormRules = {
 
 const formRef = ref<InstanceType<typeof ElForm>>()
 
-const loginAction = async () => {
+const loginAction = async (isRemember: boolean) => {
 	if (!formRef.value) return
-	await formRef.value.validate(valid => {
+	await formRef.value.validate(async valid => {
 		if (valid) {
 			// 执行登录逻辑
-			loginStore.loginAccountAction(account)
+			try {
+				await loginStore.loginAccountAction(account)
+
+				if (isRemember) {
+					localCache.setCache(Constants.LOGIN_NAME, account.name)
+					localCache.setCache(Constants.LOGIN_PASSWORD, account.password)
+				} else {
+					localCache.removeCache(Constants.LOGIN_NAME)
+					localCache.removeCache(Constants.LOGIN_PASSWORD)
+				}
+			} catch (error) {
+				ElMessage.error('账号或者密码错误')
+				localCache.removeCache(Constants.LOGIN_NAME)
+				localCache.removeCache(Constants.LOGIN_PASSWORD)
+			}
 		} else {
 			ElMessage.error('请输入正确的格式')
 		}

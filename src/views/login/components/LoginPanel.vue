@@ -8,8 +8,14 @@ const activeTab = ref<'account' | 'phone'>('account')
 const loginAccountRef = ref<InstanceType<typeof LoginAccount>>()
 const loginPhoneRef = ref<InstanceType<typeof LoginPhone>>()
 
+const rememberPassword = (bool: boolean) => {
+	isRemember.value = bool
+}
+
 const login = () => {
-	activeTab.value === 'account' ? loginAccountRef.value?.loginAction() : loginPhoneRef.value?.loginAction()
+	activeTab.value === 'account'
+		? loginAccountRef.value?.loginAction(isRemember.value)
+		: loginPhoneRef.value?.loginAction(isRemember.value)
 }
 </script>
 
@@ -39,7 +45,7 @@ const login = () => {
 			</el-tabs>
 		</div>
 		<div class="controls">
-			<el-checkbox v-model="isRemember" label="记住密码" size="large" />
+			<el-checkbox v-model="isRemember" label="记住密码" size="large" @change="rememberPassword(isRemember)" />
 			<el-link type="primary">忘记密码</el-link>
 		</div>
 		<el-button class="login-btn" size="large" type="primary" @click="login">立即登录</el-button>
