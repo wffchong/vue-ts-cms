@@ -17,6 +17,8 @@ const loadLocalRoutes = () => {
 	return localRoutes
 }
 
+export let firstMenu: Login.UserMenu | null = null
+
 // 根据用户菜单返回对应的路由
 export const mapMenusToRoutes = (menuList: Login.UserMenu[]) => {
 	const routes: RouteRecordRaw[] = []
@@ -28,6 +30,9 @@ export const mapMenusToRoutes = (menuList: Login.UserMenu[]) => {
 			const route = localRoutes.find(item => item.path === subMenu.url)
 			if (route) {
 				routes.push(route)
+			}
+			if (route && !firstMenu) {
+				firstMenu = subMenu
 			}
 		}
 	}
