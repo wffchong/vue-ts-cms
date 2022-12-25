@@ -29,6 +29,14 @@ export const mapMenusToRoutes = (menuList: Login.UserMenu[]) => {
 		for (const subMenu of menu.children) {
 			const route = localRoutes.find(item => item.path === subMenu.url)
 			if (route) {
+				// 添加一级路由,重定向到二级路由,但是只需要添加一次，每个menu
+				if (!routes.find(item => item.path === menu.url)) {
+					routes.push({
+						path: menu.url,
+						redirect: subMenu.url
+					})
+				}
+
 				routes.push(route)
 			}
 			if (route && !firstMenu) {
@@ -48,4 +56,33 @@ export const mapPathToMenu = (path: string, userMenus: Login.UserMenu[]) => {
 			}
 		}
 	}
+}
+
+interface Breadcrumbs {
+	name: string
+	path: string
+}
+
+// 根据当前路由返回面包屑
+export const mapPathToBreadcrumbs = (path: string, userMenus: Login.UserMenu[]): Breadcrumbs[] => {
+	const breadcrumbs: Breadcrumbs[] = []
+
+	for (const menu of userMenus) {
+		for (const submenu of menu.children) {
+			if (submenu.url === path) {
+				// 第一级菜单
+				breadcrumbs.push({
+					path: menu.url,
+					name: menu.name
+				})
+				// 第二级菜单
+				breadcrumbs.push({
+					path,
+					name: submenu.name
+				})
+			}
+		}
+	}
+
+	return breadcrumbs
 }
