@@ -22,9 +22,6 @@ export const mapMenusToRoutes = (menuList: Login.UserMenu[]) => {
 	const routes: RouteRecordRaw[] = []
 
 	const localRoutes = loadLocalRoutes()
-	console.log(menuList)
-
-	console.log(localRoutes)
 
 	for (const menu of menuList) {
 		for (const subMenu of menu.children) {
@@ -35,4 +32,15 @@ export const mapMenusToRoutes = (menuList: Login.UserMenu[]) => {
 		}
 	}
 	return routes
+}
+
+// 根据当前路由返回id
+export const mapPathToMenu = (path: string, userMenus: Login.UserMenu[]) => {
+	for (const menu of userMenus) {
+		for (const submenu of menu.children) {
+			if (submenu.url === path) {
+				return submenu.id
+			}
+		}
+	}
 }

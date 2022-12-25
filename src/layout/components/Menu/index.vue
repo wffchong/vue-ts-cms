@@ -1,8 +1,20 @@
 <script setup lang="ts">
+import type { Login } from '@/service/interface'
 import { useLoginStore } from '@/store/modules/login'
+import { mapPathToMenu } from '@/utils/map-menu'
+
 const loginStore = useLoginStore()
 const { userMenus } = loginStore
-console.log(userMenus)
+const router = useRouter()
+const route = useRoute()
+
+const defaultActive = computed(() => {
+	return mapPathToMenu(route.path, userMenus)
+})
+
+const handleMenuClick = (subMenu: Login.UserMenu) => {
+	router.push(subMenu.url)
+}
 </script>
 
 <template>
@@ -12,7 +24,12 @@ console.log(userMenus)
 			<h2 class="title">后台管理系统</h2>
 		</div>
 		<div class="menu">
-			<el-menu default-active="2" text-color="#b7bdc3" active-text-color="#fff" background-color="#001529">
+			<el-menu
+				:default-active="defaultActive + ''"
+				text-color="#b7bdc3"
+				active-text-color="#fff"
+				background-color="#001529"
+			>
 				<template v-for="menu in userMenus" :key="menu.id">
 					<el-sub-menu :index="menu.id + ''">
 						<template #title>
@@ -21,7 +38,9 @@ console.log(userMenus)
 						</template>
 
 						<template v-for="subMenu in menu.children" :key="subMenu.id">
-							<el-menu-item :index="subMenu.id + ''">{{ subMenu.name }}</el-menu-item>
+							<el-menu-item :index="subMenu.id + ''" @click="handleMenuClick(subMenu)">{{
+								subMenu.name
+							}}</el-menu-item>
 						</template>
 					</el-sub-menu>
 				</template>

@@ -36,7 +36,7 @@ export const useLoginStore = defineStore({
 			const routes = mapMenusToRoutes(this.userMenus)
 
 			routes.forEach(route => {
-				router.addRoute(route)
+				router.addRoute('main', route)
 			})
 
 			router.push('/main')
@@ -56,7 +56,7 @@ export const useLoginStore = defineStore({
 				// 3.动态添加路由
 
 				const routes = mapMenusToRoutes(userMenus)
-				routes.forEach(route => router.addRoute(route))
+				routes.forEach(route => router.addRoute('main', route))
 			}
 		}
 	},
