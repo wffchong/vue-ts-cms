@@ -8,7 +8,7 @@ import App from './App.vue'
 
 const app = createApp(App)
 app.use(icons)
-app.use(router)
 app.use(pinia)
+app.use(router)
 
 app.mount('#app')
