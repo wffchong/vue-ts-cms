@@ -2,17 +2,23 @@
 import Menu from './components/Menu/index.vue'
 import Header from './components/Header/index.vue'
 import Main from './components/Main/index.vue'
+
+const isFold = ref(false)
+
+const changeIsFold = (bool: boolean) => {
+	isFold.value = bool
+}
 </script>
 
 <template>
 	<div class="layout">
 		<el-container class="layout-container">
-			<el-aside width="210px">
-				<Menu />
+			<el-aside :width="isFold ? '60px' : '210px'" class="el-aside">
+				<Menu :isFold="isFold" />
 			</el-aside>
 			<el-container>
 				<el-header>
-					<Header />
+					<Header :isFold="isFold" @changeIsFold="changeIsFold" />
 				</el-header>
 				<el-main>
 					<Main />
@@ -27,6 +33,22 @@ import Main from './components/Main/index.vue'
 	height: 100%;
 	.layout-container {
 		height: 100%;
+		.el-aside {
+			overflow-x: hidden;
+			overflow-y: auto;
+			line-height: 200px;
+			text-align: left;
+			cursor: pointer;
+			background-color: #001529;
+			scrollbar-width: none; /* firefox */
+			-ms-overflow-style: none; /* IE 10+ */
+
+			transition: width 0.3s ease;
+
+			&::-webkit-scrollbar {
+				display: none;
+			}
+		}
 	}
 }
 </style>

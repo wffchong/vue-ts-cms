@@ -3,6 +3,10 @@ import type { Login } from '@/service/interface'
 import { useLoginStore } from '@/store/modules/login'
 import { mapPathToMenu } from '@/utils/map-menu'
 
+defineProps<{
+	isFold: boolean
+}>()
+
 const loginStore = useLoginStore()
 const { userMenus } = loginStore
 const router = useRouter()
@@ -21,7 +25,7 @@ const handleMenuClick = (subMenu: Login.UserMenu) => {
 	<div class="main-menu">
 		<div class="logo">
 			<img class="img" src="@/assets/vue.svg" alt="" />
-			<h2 class="title">后台管理系统</h2>
+			<h2 class="title" v-show="!isFold">后台管理系统</h2>
 		</div>
 		<div class="menu">
 			<el-menu
@@ -29,11 +33,14 @@ const handleMenuClick = (subMenu: Login.UserMenu) => {
 				text-color="#b7bdc3"
 				active-text-color="#fff"
 				background-color="#001529"
+				:collapse="isFold"
 			>
 				<template v-for="menu in userMenus" :key="menu.id">
 					<el-sub-menu :index="menu.id + ''">
 						<template #title>
-							<el-icon><location /></el-icon>
+							<el-icon>
+								<component :is="menu.icon.split('el-icon-')[1]"></component>
+							</el-icon>
 							<span>{{ menu.name }}</span>
 						</template>
 
