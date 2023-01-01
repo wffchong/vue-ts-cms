@@ -31,9 +31,9 @@
 					<el-form-item label="创建时间">
 						<el-date-picker
 							type="daterange"
-							range-separator="To"
-							start-placeholder="Start date"
-							end-placeholder="End date"
+							range-separator="-"
+							start-placeholder="开始时间"
+							end-placeholder="结束时间"
 							size="large"
 						/>
 					</el-form-item>
