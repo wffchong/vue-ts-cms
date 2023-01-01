@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import UserSearch from './components/UserSearch/index.vue'
+</script>
 
 <template>
-	<div class="user">user</div>
+	<div class="user">
+		<user-search />
+	</div>
 </template>
 
 <style scoped lang="less">

@@ -20,7 +20,7 @@ const changeIsFold = (bool: boolean) => {
 				<el-header>
 					<Header :isFold="isFold" @changeIsFold="changeIsFold" />
 				</el-header>
-				<el-main>
+				<el-main class="el-main">
 					<Main />
 				</el-main>
 			</el-container>
@@ -48,6 +48,9 @@ const changeIsFold = (bool: boolean) => {
 			&::-webkit-scrollbar {
 				display: none;
 			}
+		}
+		.el-main {
+			background-color: #f0f2f5;
 		}
 	}
 }
