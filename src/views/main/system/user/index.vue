@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import UserSearch from './components/UserSearch/index.vue'
 import UserContent from './components/UserContent/index.vue'
+import UserModal from './components/UserModal/index.vue'
 
 export interface SearchForm {
 	name: string
@@ -25,6 +26,7 @@ const handleResetClick = () => {
 	<div class="user">
 		<user-search @query-click="handleQueryClick" @reset-click="handleResetClick" />
 		<user-content ref="contentRef" />
+		<user-modal />
 	</div>
 </template>
 

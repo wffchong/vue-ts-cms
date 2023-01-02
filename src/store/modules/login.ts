@@ -7,6 +7,7 @@ import { localCache } from '@/utils/cache'
 import { Constants } from '@/enums/constants'
 import router from '@/router'
 import { mapMenusToRoutes } from '@/utils/map-menu'
+import { useGlobalStore } from '..'
 
 export const useLoginStore = defineStore({
 	id: 'LoginState',
@@ -32,6 +33,9 @@ export const useLoginStore = defineStore({
 
 			localCache.setCache(Constants.USER_INFO, userInfoResultData)
 			localCache.setCache(Constants.USER_MENUS, userMenuResultData)
+
+			const globalStore = useGlobalStore()
+			globalStore.fetchEntireDataAction()
 
 			const routes = mapMenusToRoutes(this.userMenus)
 

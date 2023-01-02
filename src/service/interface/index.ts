@@ -117,3 +117,33 @@ export namespace User {
 	}
 	export type ResGetUserListType = ResultData<ResGetUserList>
 }
+
+// 全局模块
+export namespace Global {
+	export interface Department {
+		id: number
+		name: string
+		parentId: number
+		createAt: string
+		updateAt: string
+		leader: string
+	}
+	export interface Role {
+		id: number
+		name: string
+		intro: string
+		createAt: string
+		updateAt: string
+		menuList: Login.UserMenu[]
+	}
+	export interface ResDepartmentList {
+		list: Department[]
+		totalCount: number
+	}
+	export interface ResRoleList {
+		list: Role[]
+		totalCount: number
+	}
+	export type ResDepartmentListType = ResultData<ResDepartmentList>
+	export type ResRoleListType = ResultData<ResRoleList>
+}
