@@ -97,7 +97,7 @@ export namespace User {
 		offset?: number
 		size?: number
 		name?: string
-		cellphone?: number
+		cellphone?: string
 		enable?: number
 	}
 	export interface UserInfo {
