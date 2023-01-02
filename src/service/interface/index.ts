@@ -90,3 +90,30 @@ export namespace Login {
 	export type ResGetUserMenuByRoleIdType = ResultData<UserMenu[]>
 	export type ResGetUserMenuType = ResultData<ResGetUserMenu>
 }
+
+// * 用户模块
+export namespace User {
+	export interface ReqGetUserList {
+		offset?: number
+		size?: number
+		name?: string
+		cellphone?: number
+		enable?: number
+	}
+	export interface UserInfo {
+		id: number
+		name: string
+		realname: string
+		cellphone: number
+		enable: number
+		departmentId: number
+		roleId: number
+		createAt: string
+		updateAt: string
+	}
+	export interface ResGetUserList {
+		list: UserInfo[]
+		totalCount: number
+	}
+	export type ResGetUserListType = ResultData<ResGetUserList>
+}

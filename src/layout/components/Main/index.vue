@@ -8,6 +8,5 @@
 
 <style scoped lang="less">
 .main-main {
-	color: red;
 }
 </style>
