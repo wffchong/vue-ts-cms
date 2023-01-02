@@ -57,6 +57,9 @@ export const useLoginStore = defineStore({
 				this.userInfo = userInfo
 				this.userMenus = userMenus
 
+				const globalStore = useGlobalStore()
+				globalStore.fetchEntireDataAction()
+
 				const routes = mapMenusToRoutes(userMenus)
 				routes.forEach(route => router.addRoute('main', route))
 			}

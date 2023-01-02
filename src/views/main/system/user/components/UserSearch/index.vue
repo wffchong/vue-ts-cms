@@ -11,7 +11,7 @@ const searchForm = reactive<SearchForm>({
 	name: '',
 	realname: '',
 	cellphone: '',
-	enable: 1,
+	enable: '',
 	createAt: ''
 })
 

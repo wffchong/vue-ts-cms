@@ -4,6 +4,10 @@ import { useUserStore } from '@/store/modules/user'
 import { formatUTC } from '@/utils/format-time'
 import type { SearchForm } from '../../index.vue'
 
+const emit = defineEmits<{
+	(e: 'newUserClick'): void
+}>()
+
 // 表格默认数据s
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -31,6 +35,10 @@ const deleteClick = (id: string) => {
 	userStore.deleteUserByIdAction(id)
 }
 
+const handleNewUser = () => {
+	emit('newUserClick')
+}
+
 fetchUserList()
 
 defineExpose({ fetchUserList })
@@ -40,7 +48,7 @@ defineExpose({ fetchUserList })
 	<div class="content">
 		<div class="header">
 			<h3 class="title">用户列表</h3>
-			<el-button type="primary">新建用户</el-button>
+			<el-button type="primary" @click="handleNewUser">新建用户</el-button>
 		</div>
 		<div class="table">
 			<el-table :data="userList" border>

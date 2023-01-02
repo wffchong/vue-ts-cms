@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import piniaPersistConfig from '@/config/piniaPersist'
 import type { UserState } from '../interface'
-import { deleteUserById, getUserList } from '@/service/modules/user'
+import { addUser, deleteUserById, getUserList } from '@/service/modules/user'
 import type { User } from '@/service/interface'
 import { ElMessage } from 'element-plus'
 
@@ -25,6 +25,14 @@ export const useUserStore = defineStore({
 				ElMessage.success(res.data)
 				this.getUserListAction({ offset: 0, size: 10 })
 			}
+		},
+		async newUserDataAction(userInfo: User.ReqAddUser) {
+			// 1.创建新的用户
+			const newResult = await addUser(userInfo)
+			console.log(newResult)
+
+			// 2.重新请求新的数据
+			this.getUserListAction({ offset: 0, size: 10 })
 		}
 	},
 	persist: piniaPersistConfig('UserState')

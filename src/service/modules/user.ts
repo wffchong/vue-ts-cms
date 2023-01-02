@@ -13,3 +13,17 @@ export const deleteUserById = (id: string) => {
 		url: `/users/${id}`
 	})
 }
+
+export const addUser = (info: User.ReqAddUser) => {
+	return httpRequest.post({
+		url: '/users',
+		data: info
+	})
+}
+
+export const editUser = (id: string, info: User.ReqAddUser) => {
+	return httpRequest.patch({
+		url: `/users/${id}`,
+		data: info
+	})
+}

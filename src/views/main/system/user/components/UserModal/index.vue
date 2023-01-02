@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/store'
+import { useUserStore } from '@/store/modules/user'
+import type { User } from '@/service/interface/index'
 
 const globalStore = useGlobalStore()
+const userStore = useUserStore()
 const { entireDepartments, entireRoles } = storeToRefs(globalStore)
 
-const centerDialogVisible = ref(true)
-const formData = reactive({
+const centerDialogVisible = ref(false)
+const formData = reactive<User.ReqAddUser>({
 	name: '',
 	realname: '',
 	password: '',
@@ -14,11 +17,27 @@ const formData = reactive({
 	roleId: '',
 	departmentId: ''
 })
+
+const handleConfirm = () => {
+	centerDialogVisible.value = false
+	userStore.newUserDataAction(formData)
+}
+
+defineExpose({
+	centerDialogVisible
+})
 </script>
 
 <template>
 	<div class="modal">
-		<el-dialog v-model="centerDialogVisible" title="新建用户" width="30%" center>
+		<el-dialog
+			v-model="centerDialogVisible"
+			title="新建用户"
+			width="30%"
+			center
+			destroy-on-close
+			:close-on-click-modal="false"
+		>
 			<div class="form">
 				<el-form label-width="80px" size="large">
 					<el-form-item label="用户名" prop="name">
@@ -52,7 +71,7 @@ const formData = reactive({
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="centerDialogVisible = false">取消</el-button>
-					<el-button type="primary" @click="centerDialogVisible = false"> 确定 </el-button>
+					<el-button type="primary" @click="handleConfirm">确定</el-button>
 				</span>
 			</template>
 		</el-dialog>

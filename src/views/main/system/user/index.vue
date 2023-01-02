@@ -7,11 +7,12 @@ export interface SearchForm {
 	name: string
 	realname: string
 	cellphone: string
-	enable: number
+	enable: number | string
 	createAt: string
 }
 
 const contentRef = ref<InstanceType<typeof UserContent>>()
+const modalRef = ref<InstanceType<typeof UserModal>>()
 
 const handleQueryClick = (searchForm: SearchForm) => {
 	contentRef.value?.fetchUserList(searchForm)
@@ -20,13 +21,17 @@ const handleQueryClick = (searchForm: SearchForm) => {
 const handleResetClick = () => {
 	contentRef.value?.fetchUserList()
 }
+
+const handleNewUserClick = () => {
+	if (modalRef.value) modalRef.value.centerDialogVisible = true
+}
 </script>
 
 <template>
 	<div class="user">
 		<user-search @query-click="handleQueryClick" @reset-click="handleResetClick" />
-		<user-content ref="contentRef" />
-		<user-modal />
+		<user-content ref="contentRef" @new-user-click="handleNewUserClick" />
+		<user-modal ref="modalRef" />
 	</div>
 </template>
 

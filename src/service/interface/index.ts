@@ -98,7 +98,7 @@ export namespace User {
 		size?: number
 		name?: string
 		cellphone?: string
-		enable?: number
+		enable?: number | string
 	}
 	export interface UserInfo {
 		id: number
@@ -114,6 +114,14 @@ export namespace User {
 	export interface ResGetUserList {
 		list: UserInfo[]
 		totalCount: number
+	}
+	export interface ReqAddUser {
+		name: string
+		realname: string
+		password?: string
+		cellphone: string
+		departmentId: string | number
+		roleId: string | number
 	}
 	export type ResGetUserListType = ResultData<ResGetUserList>
 }
