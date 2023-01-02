@@ -27,6 +27,10 @@ const handleSizeChange = () => {
 	fetchUserList()
 }
 
+const deleteClick = (id: string) => {
+	userStore.deleteUserByIdAction(id)
+}
+
 fetchUserList()
 
 defineExpose({ fetchUserList })
@@ -63,9 +67,18 @@ defineExpose({ fetchUserList })
 					</template>
 				</el-table-column>
 				<el-table-column label="操作" align="center" width="150px">
-					<template #default>
+					<template #default="scope">
 						<el-button size="small" icon="Edit" type="primary" text> 编辑 </el-button>
-						<el-button size="small" icon="Delete" type="danger" text> 删除 </el-button>
+						<el-popconfirm
+							title="你确定要删除吗?"
+							confirm-button-text="确定"
+							cancel-button-text="取消"
+							@confirm="deleteClick(scope.row.id)"
+						>
+							<template #reference>
+								<el-button size="small" icon="Delete" type="danger" text> 删除 </el-button>
+							</template>
+						</el-popconfirm>
 					</template>
 				</el-table-column>
 			</el-table>

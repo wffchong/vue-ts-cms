@@ -7,3 +7,9 @@ export const getUserList = (info: User.ReqGetUserList) => {
 		data: info
 	})
 }
+
+export const deleteUserById = (id: string) => {
+	return httpRequest.delete({
+		url: `/users/${id}`
+	})
+}
