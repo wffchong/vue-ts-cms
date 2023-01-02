@@ -23,14 +23,18 @@ const handleResetClick = () => {
 }
 
 const handleNewUserClick = () => {
-	if (modalRef.value) modalRef.value.centerDialogVisible = true
+	if (modalRef.value) modalRef.value.setModalVisible()
+}
+
+const handleEditUserClick = (itemData: any) => {
+	if (modalRef.value) modalRef.value.setModalVisible(false, itemData)
 }
 </script>
 
 <template>
 	<div class="user">
 		<user-search @query-click="handleQueryClick" @reset-click="handleResetClick" />
-		<user-content ref="contentRef" @new-user-click="handleNewUserClick" />
+		<user-content ref="contentRef" @new-user-click="handleNewUserClick" @edit-click="handleEditUserClick" />
 		<user-modal ref="modalRef" />
 	</div>
 </template>

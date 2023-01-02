@@ -6,6 +6,7 @@ import type { SearchForm } from '../../index.vue'
 
 const emit = defineEmits<{
 	(e: 'newUserClick'): void
+	(e: 'editClick', itemData: any): void
 }>()
 
 // 表格默认数据s
@@ -17,7 +18,7 @@ const { userList, totalCount } = storeToRefs(userStore)
 
 const fetchUserList = (searchForm?: SearchForm) => {
 	userStore.getUserListAction({
-		offset: currentPage.value - 1,
+		offset: (currentPage.value - 1) * 10,
 		size: pageSize.value,
 		...searchForm
 	})
@@ -33,6 +34,10 @@ const handleSizeChange = () => {
 
 const deleteClick = (id: string) => {
 	userStore.deleteUserByIdAction(id)
+}
+
+const editClick = (itemData: any) => {
+	emit('editClick', itemData)
 }
 
 const handleNewUser = () => {
@@ -76,7 +81,9 @@ defineExpose({ fetchUserList })
 				</el-table-column>
 				<el-table-column label="操作" align="center" width="150px">
 					<template #default="scope">
-						<el-button size="small" icon="Edit" type="primary" text> 编辑 </el-button>
+						<el-button size="small" icon="Edit" type="primary" text @click="editClick(scope.row)">
+							编辑
+						</el-button>
 						<el-popconfirm
 							title="你确定要删除吗?"
 							confirm-button-text="确定"

@@ -2,14 +2,13 @@
 import { storeToRefs } from 'pinia'
 import { useGlobalStore } from '@/store'
 import { useUserStore } from '@/store/modules/user'
-import type { User } from '@/service/interface/index'
 
 const globalStore = useGlobalStore()
 const userStore = useUserStore()
 const { entireDepartments, entireRoles } = storeToRefs(globalStore)
 
 const centerDialogVisible = ref(false)
-const formData = reactive<User.ReqAddUser>({
+const formData = reactive<any>({
 	name: '',
 	realname: '',
 	password: '',
@@ -17,14 +16,39 @@ const formData = reactive<User.ReqAddUser>({
 	roleId: '',
 	departmentId: ''
 })
+const isNewRef = ref(true)
+const editData = ref()
 
 const handleConfirm = () => {
 	centerDialogVisible.value = false
-	userStore.newUserDataAction(formData)
+
+	if (!isNewRef.value && editData.value) {
+		console.log(formData)
+
+		userStore.editUserDataAction(editData.value.id, formData)
+	} else {
+		userStore.newUserDataAction(formData)
+	}
+}
+
+const setModalVisible = (isNew: boolean = true, itemData?: any) => {
+	centerDialogVisible.value = true
+	isNewRef.value = isNew
+	if (!isNew && itemData) {
+		for (const key in formData) {
+			formData[key] = itemData[key]
+		}
+		editData.value = itemData
+	} else {
+		for (const key in formData) {
+			formData[key] = ''
+		}
+		editData.value = null
+	}
 }
 
 defineExpose({
-	centerDialogVisible
+	setModalVisible
 })
 </script>
 
@@ -46,7 +70,7 @@ defineExpose({
 					<el-form-item label="真实姓名" prop="realname">
 						<el-input v-model="formData.realname" placeholder="请输入真实姓名" />
 					</el-form-item>
-					<el-form-item label="密码" prop="password">
+					<el-form-item label="密码" prop="password" v-if="isNewRef">
 						<el-input v-model="formData.password" placeholder="请输入密码" show-password />
 					</el-form-item>
 					<el-form-item label="手机号码" prop="cellphone">
