@@ -18,3 +18,9 @@ export interface GlobalState {
 	entireRoles: Global.Role[]
 	entireDepartments: Global.Department[]
 }
+
+/* CommonState */
+export interface CommonState {
+	pageList: any[]
+	pageCount: number
+}
