@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import PageSearch from './components/PageSearch/index.vue'
+import PageSearch from '@/components/PageSearch/index.vue'
 import PageContent from './components/PageContent/index.vue'
 import PageModal from './components/PageModal/index.vue'
+import { searchConfig } from './config'
 
 export interface SearchForm {
 	name: string
-	realname?: string
-	cellphone?: string
-	enable?: number | string
+	leader: string
 	createAt: string
-	leader?: string
 }
 
 const contentRef = ref<InstanceType<typeof PageContent>>()
@@ -34,7 +32,7 @@ const handleEditUserClick = (itemData: any) => {
 
 <template>
 	<div class="department">
-		<page-search @query-click="handleQueryClick" @reset-click="handleResetClick" />
+		<page-search :search-config="searchConfig" @query-click="handleQueryClick" @reset-click="handleResetClick" />
 		<page-content ref="contentRef" @new-page-click="handleNewPageClick" @edit-click="handleEditUserClick" />
 		<page-modal ref="modalRef" />
 	</div>
