@@ -73,7 +73,7 @@ defineExpose({ fetchPageList })
 		</div>
 		<div class="table">
 			<el-table :data="pageList" border>
-				<template v-for="item in contentConfig.propList" :key="item.index">
+				<template v-for="(item, index) in contentConfig.propList" :key="index">
 					<template v-if="item.type === 'timer'">
 						<el-table-column v-bind="item">
 							<template #default="scope">

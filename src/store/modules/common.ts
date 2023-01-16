@@ -3,6 +3,9 @@ import piniaPersistConfig from '@/config/piniaPersist'
 import { getPageList, editPage, addPage, deletePageById } from '@/service/modules/common'
 import type { CommonState } from '../interface'
 import { ElMessage } from 'element-plus'
+import { useGlobalStore } from '..'
+
+const globalStore = useGlobalStore()
 
 export const useCommonStore = defineStore({
 	id: 'CommonStore',
@@ -23,6 +26,7 @@ export const useCommonStore = defineStore({
 				ElMessage.error(res.data)
 			} else {
 				ElMessage.success(res.data)
+				await globalStore.fetchEntireDataAction()
 				this.getPageListAction(pageName, { offset: 0, size: 10 })
 			}
 		},
@@ -32,15 +36,18 @@ export const useCommonStore = defineStore({
 				ElMessage.error(newResult.data)
 			} else {
 				ElMessage.success(newResult.data)
+				await globalStore.fetchEntireDataAction()
 				this.getPageListAction(pageName, { offset: 0, size: 10 })
 			}
 		},
 		async editPageDataAction(pageName: string, id: string, info: any) {
 			const editResult = await editPage(pageName, id, info)
+
 			if (editResult.code === -1003) {
 				ElMessage.error(editResult.data)
 			} else {
 				ElMessage.success(editResult.data)
+				await globalStore.fetchEntireDataAction()
 				this.getPageListAction(pageName, { offset: 0, size: 10 })
 			}
 		}
