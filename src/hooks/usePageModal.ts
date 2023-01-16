@@ -1,11 +1,8 @@
 import type PageModal from '@/components/PageModal/index.vue'
 
-interface Params {
-	newCallBack?: () => void
-	editCallback?: (data: any) => void
-}
+type callBackFn = (data?: Record<string, any>) => void
 
-export const usePageModal = ({ newCallBack, editCallback }: Params) => {
+export const usePageModal = (newCallBack?: callBackFn, editCallback?: callBackFn) => {
 	const modalRef = ref<InstanceType<typeof PageModal>>()
 
 	const handleNewPageClick = () => {

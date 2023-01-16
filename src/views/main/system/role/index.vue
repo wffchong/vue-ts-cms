@@ -30,7 +30,7 @@ const editCallback = (itemData: any) => {
 }
 
 const { contentRef, handleQueryClick, handleResetClick } = usePageContent()
-const { modalRef, handleEditPageClick, handleNewPageClick } = usePageModal({ newCallBack, editCallback })
+const { modalRef, handleEditPageClick, handleNewPageClick } = usePageModal(newCallBack, editCallback)
 
 const handleElTreeCheck = (data1: any, data2: any) => {
 	const menuList = [...data2.checkedKeys, ...data2.halfCheckedKeys]
