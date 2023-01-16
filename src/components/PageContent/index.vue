@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/store/modules/common'
 import { formatUTC } from '@/utils/format-time'
 import type { SearchForm } from '@/views/main/system/department/index.vue'
+import { contentConfig } from '@/views/main/system/department/config'
 
 interface IProps {
 	contentConfig: {
@@ -46,7 +47,7 @@ const handleSizeChange = () => {
 }
 
 const deleteClick = (id: string) => {
-	commonStore.deletePageByIdAction('department', id)
+	commonStore.deletePageByIdAction(contentConfig.pageName, id)
 }
 
 const editClick = (itemData: any) => {

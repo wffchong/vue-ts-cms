@@ -1,4 +1,22 @@
-const contentConfig = {
+interface Prop {
+	type: string
+	label: string
+	width?: string
+	align: string
+	prop?: string
+	slotName?: string
+}
+
+interface ContentConfig {
+	pageName: string
+	header: {
+		title: string
+		btnTitle: string
+	}
+	propList: Prop[]
+}
+
+const contentConfig: ContentConfig = {
 	pageName: 'department',
 	header: {
 		title: '部门列表',
