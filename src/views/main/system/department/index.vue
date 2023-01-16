@@ -4,15 +4,11 @@ import PageContent from '@/components/PageContent/index.vue'
 import PageModal from '@/components/PageModal/index.vue'
 import { searchConfig, contentConfig, modalConfig } from './config'
 import { useGlobalStore } from '@/store'
+import { usePageContent } from '@/hooks/usePageContent'
+import { usePageModal } from '@/hooks/usePageModal'
 
-export interface SearchForm {
-	name: string
-	leader: string
-	createAt: string
-}
-
-const contentRef = ref<InstanceType<typeof PageContent>>()
-const modalRef = ref<InstanceType<typeof PageModal>>()
+const { contentRef, handleQueryClick, handleResetClick } = usePageContent()
+const { modalRef, handleEditPageClick, handleNewPageClick } = usePageModal()
 
 const modalConfigRef = computed(() => {
 	const globalStore = useGlobalStore()
@@ -29,22 +25,6 @@ const modalConfigRef = computed(() => {
 
 	return modalConfig
 })
-
-const handleQueryClick = (searchForm: SearchForm) => {
-	contentRef.value?.fetchPageList(searchForm)
-}
-
-const handleResetClick = () => {
-	contentRef.value?.fetchPageList()
-}
-
-const handleNewPageClick = () => {
-	if (modalRef.value) modalRef.value.setModalVisible()
-}
-
-const handleEditPageClick = (itemData: any) => {
-	if (modalRef.value) modalRef.value.setModalVisible(false, itemData)
-}
 </script>
 
 <template>
