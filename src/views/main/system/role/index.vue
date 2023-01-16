@@ -7,37 +7,30 @@ import { useGlobalStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { ElTree } from 'element-plus'
 import { mapMenuListToIds } from '@/utils/map-menu'
+import { usePageContent } from '@/hooks/usePageContent'
+import { usePageModal } from '@/hooks/usePageModal'
 
-const contentRef = ref<InstanceType<typeof PageContent>>()
-const modalRef = ref<InstanceType<typeof PageModal>>()
 const treeRef = ref<InstanceType<typeof ElTree>>()
 
 const globalStore = useGlobalStore()
 const { menuList } = storeToRefs(globalStore)
 const otherInfo = ref({})
 
-const handleQueryClick = (searchForm: any) => {
-	contentRef.value?.fetchPageList(searchForm)
-}
-
-const handleResetClick = () => {
-	contentRef.value?.fetchPageList()
-}
-
-const handleNewPageClick = () => {
-	if (modalRef.value) modalRef.value.setModalVisible()
+const newCallBack = () => {
 	nextTick(() => {
 		treeRef.value?.setCheckedKeys([])
 	})
 }
 
-const handleEditPageClick = (itemData: any) => {
-	const ids = mapMenuListToIds(itemData.menuList)
-	if (modalRef.value) modalRef.value.setModalVisible(false, itemData)
+const editCallback = (itemData: any) => {
 	nextTick(() => {
-		treeRef.value?.setCheckedKeys(ids)
+		const menuIds = mapMenuListToIds(itemData.menuList)
+		treeRef.value?.setCheckedKeys(menuIds)
 	})
 }
+
+const { contentRef, handleQueryClick, handleResetClick } = usePageContent()
+const { modalRef, handleEditPageClick, handleNewPageClick } = usePageModal({ newCallBack, editCallback })
 
 const handleElTreeCheck = (data1: any, data2: any) => {
 	const menuList = [...data2.checkedKeys, ...data2.halfCheckedKeys]
