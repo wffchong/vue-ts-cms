@@ -11,7 +11,7 @@ interface IProps {
 			btnTitle?: string
 		}
 		propList: any[]
-		childrenTree: {
+		childrenTree?: {
 			rowKey: string
 			treeProps: {
 				children: string

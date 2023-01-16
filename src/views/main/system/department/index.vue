@@ -42,7 +42,7 @@ const handleNewPageClick = () => {
 	if (modalRef.value) modalRef.value.setModalVisible()
 }
 
-const handleEditUserClick = (itemData: any) => {
+const handleEditPageClick = (itemData: any) => {
 	if (modalRef.value) modalRef.value.setModalVisible(false, itemData)
 }
 </script>
@@ -54,7 +54,7 @@ const handleEditUserClick = (itemData: any) => {
 			:content-config="contentConfig"
 			ref="contentRef"
 			@new-page-click="handleNewPageClick"
-			@edit-click="handleEditUserClick"
+			@edit-click="handleEditPageClick"
 		/>
 		<page-modal ref="modalRef" :modal-config="modalConfigRef" />
 	</div>

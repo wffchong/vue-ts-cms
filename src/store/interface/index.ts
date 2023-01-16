@@ -17,6 +17,7 @@ export interface UserState {
 export interface GlobalState {
 	entireRoles: Global.Role[]
 	entireDepartments: Global.Department[]
+	menuList: any[]
 }
 
 /* CommonState */

@@ -4,21 +4,25 @@ import type { GlobalState } from './interface'
 import type { App } from 'vue'
 import { useLoginStore } from './modules/login'
 import { getDepartmentList, getRoleList } from '@/service/modules/global'
+import { getMenuList } from '@/service/modules/login'
 
 export const useGlobalStore = defineStore({
 	id: 'GlobalState',
 	state: (): GlobalState => ({
 		entireRoles: [],
-		entireDepartments: []
+		entireDepartments: [],
+		menuList: []
 	}),
 	actions: {
 		async fetchEntireDataAction() {
 			const rolesResult = await getRoleList()
 			const departmentsResult = await getDepartmentList()
+			const menuListResult = await getMenuList()
 
 			// 保存数据
 			this.entireRoles = rolesResult.data.list
 			this.entireDepartments = departmentsResult.data.list
+			this.menuList = menuListResult.data.list
 		}
 	}
 })

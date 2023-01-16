@@ -10,6 +10,7 @@ interface IProps {
 		}
 		formItems: any[]
 	}
+	otherInfo?: Record<string, any>
 }
 
 const props = defineProps<IProps>()
@@ -29,10 +30,14 @@ const editData = ref()
 const handleConfirm = () => {
 	centerDialogVisible.value = false
 
+	let infoData = formData
+	if (props.otherInfo) {
+		infoData = { ...infoData, ...props.otherInfo }
+	}
 	if (!isNewRef.value && editData.value) {
-		commonStore.editPageDataAction(props.modalConfig.pageName, editData.value.id, formData)
+		commonStore.editPageDataAction(props.modalConfig.pageName, editData.value.id, infoData)
 	} else {
-		commonStore.newPageDataAction(props.modalConfig.pageName, formData)
+		commonStore.newPageDataAction(props.modalConfig.pageName, infoData)
 	}
 }
 

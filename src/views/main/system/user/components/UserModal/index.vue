@@ -23,8 +23,6 @@ const handleConfirm = () => {
 	centerDialogVisible.value = false
 
 	if (!isNewRef.value && editData.value) {
-		console.log(formData)
-
 		userStore.editUserDataAction(editData.value.id, formData)
 	} else {
 		userStore.newUserDataAction(formData)

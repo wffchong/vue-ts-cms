@@ -14,3 +14,10 @@ export const getRoleList = () => {
 		url: '/role/list'
 	})
 }
+
+// 获取完整的菜单
+export const getMenuList = () => {
+	return httpRequest.post({
+		url: '/menu/list'
+	})
+}

@@ -86,3 +86,19 @@ export const mapPathToBreadcrumbs = (path: string, userMenus: Login.UserMenu[]):
 
 	return breadcrumbs
 }
+
+// 根据用户的菜单隐射出id的菜单树
+export const mapMenuListToIds = (menuList: any[]) => {
+	const ids: number[] = []
+	const recurseGetId = (menuList: any[]) => {
+		for (const menu of menuList) {
+			if (menu.children) {
+				recurseGetId(menu.children ?? [])
+			} else {
+				ids.push(menu.id)
+			}
+		}
+	}
+	recurseGetId(menuList)
+	return ids
+}
