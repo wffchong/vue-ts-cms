@@ -2,7 +2,20 @@
 import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/store/modules/common'
 import { formatUTC } from '@/utils/format-time'
-import type { SearchForm } from '../../index.vue'
+import type { SearchForm } from '@/views/main/system/department/index.vue'
+
+interface IProps {
+	contentConfig: {
+		pageName: string
+		header?: {
+			title?: string
+			btnTitle?: string
+		}
+		propList: any[]
+	}
+}
+
+defineProps<IProps>()
 
 const emit = defineEmits<{
 	(e: 'newPageClick'): void
@@ -52,43 +65,52 @@ defineExpose({ fetchPageList })
 <template>
 	<div class="content">
 		<div class="header">
-			<h3 class="title">部门列表</h3>
-			<el-button type="primary" @click="handleNewPage">新建部门</el-button>
+			<h3 class="title">{{ contentConfig?.header?.title ?? '数据列表' }}</h3>
+			<el-button type="primary" @click="handleNewPage">
+				{{ contentConfig?.header?.btnTitle ?? '新建数据' }}
+			</el-button>
 		</div>
 		<div class="table">
 			<el-table :data="pageList" border>
-				<el-table-column align="center" type="selection" width="60px" />
-				<el-table-column type="index" label="序号" align="center" width="60px"></el-table-column>
-				<el-table-column prop="name" label="部门名称" align="center" width="150px"></el-table-column>
-				<el-table-column prop="leader" label="部门领导" align="center" width="150px"></el-table-column>
-				<el-table-column prop="parentId" label="上级部门" align="center" width="150px"></el-table-column>
-				<el-table-column prop="createAt" label="创建时间" align="center">
-					<template #default="scope">
-						{{ formatUTC(scope.row.createAt) }}
-					</template>
-				</el-table-column>
-				<el-table-column prop="updateAt" label="更新时间" align="center">
-					<template #default="scope">
-						{{ formatUTC(scope.row.updateAt) }}
-					</template>
-				</el-table-column>
-				<el-table-column label="操作" align="center" width="150px">
-					<template #default="scope">
-						<el-button size="small" icon="Edit" type="primary" text @click="editClick(scope.row)">
-							编辑
-						</el-button>
-						<el-popconfirm
-							title="你确定要删除吗?"
-							confirm-button-text="确定"
-							cancel-button-text="取消"
-							@confirm="deleteClick(scope.row.id)"
-						>
-							<template #reference>
-								<el-button size="small" icon="Delete" type="danger" text> 删除 </el-button>
+				<template v-for="item in contentConfig.propList" :key="item.index">
+					<template v-if="item.type === 'timer'">
+						<el-table-column v-bind="item">
+							<template #default="scope">
+								{{ formatUTC(scope.row.createAt) }}
 							</template>
-						</el-popconfirm>
+						</el-table-column>
 					</template>
-				</el-table-column>
+					<template v-else-if="item.type === 'handler'">
+						<el-table-column v-bind="item">
+							<template #default="scope">
+								<el-button size="small" icon="Edit" type="primary" text @click="editClick(scope.row)">
+									编辑
+								</el-button>
+								<el-popconfirm
+									title="你确定要删除吗?"
+									confirm-button-text="确定"
+									cancel-button-text="取消"
+									@confirm="deleteClick(scope.row.id)"
+								>
+									<template #reference>
+										<el-button size="small" icon="Delete" type="danger" text> 删除 </el-button>
+									</template>
+								</el-popconfirm>
+							</template>
+						</el-table-column>
+					</template>
+					<!-- 默认插槽里面在放个作用域插槽，这样只需要在配置里面写个slotName,然后再外面使用page-content组件的时候就可以使用自定义的内容了 -->
+					<template v-else-if="item.type === 'customer'">
+						<el-table-column v-bind="item">
+							<template #default="scope">
+								<slot :name="item.slotName" v-bind="scope"></slot>
+							</template>
+						</el-table-column>
+					</template>
+					<template v-else>
+						<el-table-column v-bind="item" />
+					</template>
+				</template>
 			</el-table>
 		</div>
 		<div class="pagination">

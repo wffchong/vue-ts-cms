@@ -1,3 +1,4 @@
 import searchConfig from './searchConfig'
+import contentConfig from './contentConfig'
 
-export { searchConfig }
+export { searchConfig, contentConfig }
