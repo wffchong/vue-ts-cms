@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import usePermissions from '@/hooks/usePermissions'
 import { ElForm } from 'element-plus'
 
 interface IProps {
 	searchConfig: {
 		labelWidth?: string
 		formItems: any[]
+		pageName: string
 	}
 }
 
@@ -14,6 +16,8 @@ const emit = defineEmits<{
 	(e: 'queryClick', searchForm: any): void
 	(e: 'resetClick'): void
 }>()
+
+const isQuery = usePermissions(`${props.searchConfig.pageName}:query`)
 
 const formRef = ref<InstanceType<typeof ElForm>>()
 
@@ -35,7 +39,7 @@ const handleSearch = () => {
 </script>
 
 <template>
-	<div class="search">
+	<div class="search" v-if="isQuery">
 		<el-form label-width="80px" size="large" :model="searchForm" ref="formRef">
 			<el-row :gutter="20">
 				<template v-for="item in searchConfig.formItems" :key="item.prop">

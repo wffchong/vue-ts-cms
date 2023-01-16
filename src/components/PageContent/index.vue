@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/store/modules/common'
 import { formatUTC } from '@/utils/format-time'
+import usePermissions from '@/hooks/usePermissions'
 
 interface IProps {
 	contentConfig: {
@@ -27,14 +28,21 @@ const emit = defineEmits<{
 	(e: 'editClick', itemData: any): void
 }>()
 
+const isCreate = usePermissions(`${props.contentConfig.pageName}:create`)
+const isDelete = usePermissions(`${props.contentConfig.pageName}:delete`)
+const isUpdate = usePermissions(`${props.contentConfig.pageName}:update`)
+const isQuery = usePermissions(`${props.contentConfig.pageName}:query`)
+
 // 表格默认数据
 const currentPage = ref(1)
 const pageSize = ref(10)
 
 const commonStore = useCommonStore()
+
 const { pageList, pageCount } = storeToRefs(commonStore)
 
 const fetchPageList = (searchForm?: any) => {
+	if (!isQuery) return
 	commonStore.getPageListAction(props.contentConfig.pageName, {
 		offset: (currentPage.value - 1) * 10,
 		size: pageSize.value,
@@ -64,6 +72,11 @@ const handleNewPage = () => {
 
 fetchPageList()
 
+onUnmounted(() => {
+	pageList.value = []
+	pageCount.value = 0
+})
+
 defineExpose({ fetchPageList })
 </script>
 
@@ -71,7 +84,7 @@ defineExpose({ fetchPageList })
 	<div class="content">
 		<div class="header">
 			<h3 class="title">{{ contentConfig?.header?.title ?? '数据列表' }}</h3>
-			<el-button type="primary" @click="handleNewPage">
+			<el-button type="primary" @click="handleNewPage" v-if="isCreate">
 				{{ contentConfig?.header?.btnTitle ?? '新建数据' }}
 			</el-button>
 		</div>
@@ -88,10 +101,18 @@ defineExpose({ fetchPageList })
 					<template v-else-if="item.type === 'handler'">
 						<el-table-column v-bind="item">
 							<template #default="scope">
-								<el-button size="small" icon="Edit" type="primary" text @click="editClick(scope.row)">
+								<el-button
+									v-if="isUpdate"
+									size="small"
+									icon="Edit"
+									type="primary"
+									text
+									@click="editClick(scope.row)"
+								>
 									编辑
 								</el-button>
 								<el-popconfirm
+									v-if="isDelete"
 									title="你确定要删除吗?"
 									confirm-button-text="确定"
 									cancel-button-text="取消"

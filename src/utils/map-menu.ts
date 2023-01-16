@@ -102,3 +102,21 @@ export const mapMenuListToIds = (menuList: any[]) => {
 	recurseGetId(menuList)
 	return ids
 }
+
+// 得到按钮权限
+export const mapMenusToPermissions = (menuList: any[]) => {
+	const permissions: string[] = []
+
+	const recurseGetPermission = (menus: any[]) => {
+		for (const item of menus) {
+			if (item.type === 3) {
+				permissions.push(item.permission)
+			} else {
+				recurseGetPermission(item.children ?? [])
+			}
+		}
+	}
+	recurseGetPermission(menuList)
+
+	return permissions
+}

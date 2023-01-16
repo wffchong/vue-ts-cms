@@ -6,5 +6,6 @@ export enum Constants {
 	LOGIN_NAME = 'name',
 	LOGIN_PASSWORD = 'password',
 	USER_INFO = 'userInfo',
-	USER_MENUS = 'userMenus'
+	USER_MENUS = 'userMenus',
+	USER_PERMISSIONS = 'user_permissions'
 }
