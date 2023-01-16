@@ -2,8 +2,6 @@
 import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/store/modules/common'
 import { formatUTC } from '@/utils/format-time'
-import type { SearchForm } from '@/views/main/system/department/index.vue'
-import { contentConfig } from '@/views/main/system/department/config'
 
 interface IProps {
 	contentConfig: {
@@ -13,10 +11,16 @@ interface IProps {
 			btnTitle?: string
 		}
 		propList: any[]
+		childrenTree: {
+			rowKey: string
+			treeProps: {
+				children: string
+			}
+		}
 	}
 }
 
-defineProps<IProps>()
+const props = defineProps<IProps>()
 
 const emit = defineEmits<{
 	(e: 'newPageClick'): void
@@ -30,8 +34,8 @@ const pageSize = ref(10)
 const commonStore = useCommonStore()
 const { pageList, pageCount } = storeToRefs(commonStore)
 
-const fetchPageList = (searchForm?: SearchForm) => {
-	commonStore.getPageListAction('department', {
+const fetchPageList = (searchForm?: any) => {
+	commonStore.getPageListAction(props.contentConfig.pageName, {
 		offset: (currentPage.value - 1) * 10,
 		size: pageSize.value,
 		...searchForm
@@ -47,7 +51,7 @@ const handleSizeChange = () => {
 }
 
 const deleteClick = (id: string) => {
-	commonStore.deletePageByIdAction(contentConfig.pageName, id)
+	commonStore.deletePageByIdAction(props.contentConfig.pageName, id)
 }
 
 const editClick = (itemData: any) => {
@@ -72,7 +76,7 @@ defineExpose({ fetchPageList })
 			</el-button>
 		</div>
 		<div class="table">
-			<el-table :data="pageList" border>
+			<el-table :data="pageList" v-bind="contentConfig.childrenTree" border>
 				<template v-for="(item, index) in contentConfig.propList" :key="index">
 					<template v-if="item.type === 'timer'">
 						<el-table-column v-bind="item">
